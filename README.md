@@ -8,7 +8,7 @@ La carpeta `doc/` (documentación interna y fotos originales) **no se versiona**
 
 ## Uso
 
-Requiere Node 22.12 o superior y pnpm 11.
+Requiere Node 22.13 o superior (recomendado 24) y pnpm 11.
 
 | Comando | Qué hace |
 |---|---|
@@ -104,7 +104,7 @@ Cada `git push` a `main` publica el sitio.
 | Valor preestablecido | Astro |
 | Comando de compilación | `pnpm run build` |
 | Directorio de salida | `dist/client` (no `dist`: ahí el adaptador deja las páginas) |
-| Variables de entorno | `NODE_VERSION` = `22.12.0` o superior · `PNPM_VERSION` = `11.0.8` · `PUBLIC_AGENDA_URL` (y, si se usan, `PUBLIC_TURNSTILE_SITEKEY`, `PUBLIC_ANALITICA_*`) |
+| Variables de entorno | `NODE_VERSION` = `24.15.0` (pnpm 11 exige Node 22.13 o superior) · `PNPM_VERSION` = `11.0.8` · `PUBLIC_AGENDA_URL` (y, si se usan, `PUBLIC_TURNSTILE_SITEKEY`, `PUBLIC_ANALITICA_*`) |
 
 `public/_headers` (cabeceras de seguridad) y `404.html` funcionan igual en Pages. Pages ignora `wrangler.jsonc`: sirve para un Worker.
 

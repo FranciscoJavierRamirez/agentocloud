@@ -7,8 +7,11 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": { "not_found_handling": "404-page" },
   "observability": { "enabled": true },
-  // Dominio propio (zona en Cloudflare). www y agentocloud.cl redirigen aquí con reglas 301 en el panel.
-  "routes": [{ "pattern": "agentocloud.com", "custom_domain": true }]
+  // Borrador: el sitio se publica solo en agento-cloud-sitio.<cuenta>.workers.dev.
+  "workers_dev": true
+
+  // Al pasar al dominio propio (www y el otro dominio redirigen aquí con reglas 301 en el panel):
+  // "routes": [{ "pattern": "agentocloud.com", "custom_domain": true }],
 
   // Para el formulario (ver README › Despliegue):
   // "send_email": [{ "name": "EMAIL" }],

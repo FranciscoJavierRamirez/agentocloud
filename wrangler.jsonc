@@ -6,10 +6,11 @@
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
   "assets": { "not_found_handling": "404-page" },
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Dominio propio (zona en Cloudflare). www y agentocloud.cl redirigen aquí con reglas 301 en el panel.
+  "routes": [{ "pattern": "agentocloud.com", "custom_domain": true }]
 
-  // Al desplegar (ver README › Despliegue):
-  // "routes": [{ "pattern": "agentocloud.com", "custom_domain": true }],
+  // Para el formulario (ver README › Despliegue):
   // "send_email": [{ "name": "EMAIL" }],
   // "vars": { "CORREO_REMITENTE": "web@agentocloud.com", "CORREO_DESTINO": "contacto@agentocloud.com" }
   // Secreto: wrangler secret put TURNSTILE_SECRET

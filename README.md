@@ -110,7 +110,7 @@ un Worker, y el formulario `POST /api/contacto` necesita ese Worker). Todo lo de
 
 Cada `git push` a `main` publica el sitio. Antes de apuntar el dominio:
 
-1. En `wrangler.jsonc`: descomente `routes` (dominio `agentocloud.com`; `agentocloud.cl` redirige con una regla 301), `send_email` y `vars`.
+1. `routes` ya apunta a `agentocloud.com`; `www.agentocloud.com` y `agentocloud.cl` redirigen con reglas 301 en el panel. Para el formulario, descomente `send_email` y `vars` en `wrangler.jsonc`.
 2. Cloudflare Email Service: verifique el dominio remitente y el buzón de destino.
 3. Turnstile: cree el widget, ponga la clave pública en `PUBLIC_TURNSTILE_SITEKEY` y el secreto con `pnpm wrangler secret put TURNSTILE_SECRET`.
 4. El adaptador activa sesiones de Astro sobre KV con el binding `SESSION`. El sitio no usa sesiones: Wrangler aprovisiona ese KV al desplegar.

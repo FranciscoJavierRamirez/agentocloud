@@ -2,7 +2,7 @@
 
 Sitio estático de `agentocloud.com`, en español (`/`) e inglés (`/en/`): inicio, aviso de privacidad y 404.
 La página interna de sistema (`/sistema/`) solo existe en `pnpm dev`: la compilación de producción no la genera.
-Astro 7 · Tailwind CSS 4 · React 19 solo en islas · contenido en colecciones · Cloudflare Workers.
+Astro 7 · Tailwind CSS 4 · React 19 solo en islas · contenido en colecciones · Cloudflare Pages.
 
 La carpeta `doc/` (documentación interna y fotos originales) **no se versiona** (`.gitignore`): vive solo en el equipo de trabajo.
 
@@ -96,27 +96,27 @@ Secretas, del Worker (ver `.dev.vars.example`): `TURNSTILE_SECRET`, `CORREO_REMI
 
 ## Despliegue
 
-El sitio se publica como **Cloudflare Worker con recursos estáticos** (no como proyecto de Cloudflare Pages: el adaptador de Astro genera
-un Worker, y el formulario `POST /api/contacto` necesita ese Worker). Todo lo demás son páginas estáticas.
+El sitio se publica en **Cloudflare Pages** como sitio estático, desde GitHub (repositorio privado, rama `main`).
+Cada `git push` a `main` publica el sitio.
 
-**Desde GitHub.** Repositorio privado, rama `main`. En Cloudflare: *Workers & Pages → Create application → Workers → Import a repository*.
-
-| Ajuste | Valor |
+| Ajuste en Pages | Valor |
 |---|---|
-| Nombre del Worker | `agento-cloud-sitio` (debe coincidir con `name` en `wrangler.jsonc`) |
-| Comando de compilación | `pnpm install --frozen-lockfile && pnpm build` |
-| Comando de despliegue | `npx wrangler deploy` |
-| Variables de compilación | `NODE_VERSION` = `22.12.0` o superior · `PNPM_VERSION` = `11.0.8` · `PUBLIC_AGENDA_URL` (y, si se usan, `PUBLIC_TURNSTILE_SITEKEY`, `PUBLIC_ANALITICA_*`) |
+| Valor preestablecido | Astro |
+| Comando de compilación | `pnpm run build` |
+| Directorio de salida | `dist/client` (no `dist`: ahí el adaptador deja las páginas) |
+| Variables de entorno | `NODE_VERSION` = `22.12.0` o superior · `PNPM_VERSION` = `11.0.8` · `PUBLIC_AGENDA_URL` (y, si se usan, `PUBLIC_TURNSTILE_SITEKEY`, `PUBLIC_ANALITICA_*`) |
 
-Cada `git push` a `main` publica el sitio. Antes de apuntar el dominio:
+`public/_headers` (cabeceras de seguridad) y `404.html` funcionan igual en Pages. Pages ignora `wrangler.jsonc`: sirve para un Worker.
 
-1. Hoy el sitio se publica como borrador en `*.workers.dev`. Para el dominio propio, descomente `routes` en `wrangler.jsonc`; `www` y el otro dominio redirigen con reglas 301 en el panel. Para el formulario, descomente `send_email` y `vars`.
-2. Cloudflare Email Service: verifique el dominio remitente y el buzón de destino.
-3. Turnstile: cree el widget, ponga la clave pública en `PUBLIC_TURNSTILE_SITEKEY` y el secreto con `pnpm wrangler secret put TURNSTILE_SECRET`.
-4. El adaptador activa sesiones de Astro sobre KV con el binding `SESSION`. El sitio no usa sesiones: Wrangler aprovisiona ese KV al desplegar.
-5. Si conecta analítica o cambia de proveedor de agenda, agregue su origen a la CSP en `astro.config.mjs` (`security.csp`).
+**Formulario.** `POST /api/contacto` es la única parte que no es estática y Pages no la ejecuta: mientras tanto el formulario responde
+con error. Para activarlo hay dos caminos: publicar como Worker (`npx wrangler deploy`, con `send_email`, `vars` y
+`TURNSTILE_SECRET` en `wrangler.jsonc`) o llevar el endpoint a una Pages Function. En ambos casos: Cloudflare Email Service con el
+dominio remitente verificado y Turnstile con su clave pública en `PUBLIC_TURNSTILE_SITEKEY`.
 
-Sin `TURNSTILE_SECRET` el formulario no verifica a quien envía, y sin el binding de correo responde con error en producción (en desarrollo registra el envío en la consola).
+**Dominio.** En el proyecto de Pages: *Dominios personalizados → Configurar un dominio*. `www` y el otro dominio redirigen al
+principal con reglas 301 (*Rules → Redirect Rules*).
+
+Si conecta analítica o cambia de proveedor de agenda, agregue su origen a la CSP en `astro.config.mjs` (`security.csp`).
 
 ## Seguridad
 

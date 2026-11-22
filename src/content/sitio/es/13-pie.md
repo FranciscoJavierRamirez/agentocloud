@@ -5,7 +5,7 @@ ancla: "contacto"
 prioridad: P0
 lema: "Agento Cloud · Gemelos agénticos para el agua y la energía de la minería · Santiago, Chile"
 contacto:
-  correo: "contacto@agentocloud.com"
+  correo: "contacto@agentocloud.cl"
   linkedin_texto: "LinkedIn"
   linkedin: ""
 enlaces_legales:

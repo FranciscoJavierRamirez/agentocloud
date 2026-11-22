@@ -12,7 +12,7 @@ interface Entorno {
   TURNSTILE_SECRET?: string;
   /** Binding send_email de Cloudflare Email Service (wrangler.jsonc). */
   EMAIL?: { send(mensaje: { to: string; from: string; replyTo?: string; subject: string; text: string }): Promise<unknown> };
-  /** Remitente verificado, por ejemplo web@agentocloud.com */
+  /** Remitente verificado, por ejemplo web@agentocloud.cl */
   CORREO_REMITENTE?: string;
   CORREO_DESTINO?: string;
 }

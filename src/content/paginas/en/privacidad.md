@@ -13,7 +13,7 @@ seo:
 
 ## Who is responsible for your data
 
-Francisco Ramírez Morales, founder of Agento Cloud, while the company is being incorporated. Contact: contacto@agentocloud.com.
+Francisco Ramírez Morales, founder of Agento Cloud, while the company is being incorporated. Contact: contacto@agentocloud.cl.
 
 ## What data we receive
 
@@ -37,7 +37,7 @@ For as long as our conversation with you lasts and up to 24 months after the las
 
 ## Your rights
 
-You can ask to access, correct or delete your data, or object to its use, by writing to contacto@agentocloud.com. We will reply within the period set by law. If you are not satisfied, you can turn to the personal data protection authority.
+You can ask to access, correct or delete your data, or object to its use, by writing to contacto@agentocloud.cl. We will reply within the period set by law. If you are not satisfied, you can turn to the personal data protection authority.
 
 ## Changes
 

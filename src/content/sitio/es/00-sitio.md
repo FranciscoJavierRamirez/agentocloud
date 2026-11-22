@@ -21,7 +21,7 @@ organizacion:
   nombre: "Agento Cloud"
   descripcion: "Agento Cloud crea gemelos agénticos operacionales de bombas, estanques y pozos: agentes de inteligencia artificial que leen los datos que la operación ya tiene, encuentran la causa de cada desviación con evidencia física, recomiendan qué hacer y cuánto cuesta esperar, y miden el ahorro."
   url: "https://agentocloud.com"
-  correo: "contacto@agentocloud.com"
+  correo: "contacto@agentocloud.cl"
   ciudad: "Santiago, Chile"
 navegacion:
   saltar_al_contenido: "Saltar al contenido"
@@ -93,13 +93,13 @@ formulario:
     nombre_vacio: "Falta su nombre."
     correo_vacio: "Falta su correo."
     empresa_vacia: "Falta el nombre de su empresa."
-    envio: "No pudimos enviar el formulario. Revise su conexión e intente de nuevo, o escríbanos a contacto@agentocloud.com."
-    agenda_sin_horas: "No quedan horas esta semana. Escríbanos a contacto@agentocloud.com y coordinamos."
+    envio: "No pudimos enviar el formulario. Revise su conexión e intente de nuevo, o escríbanos a contacto@agentocloud.cl."
+    agenda_sin_horas: "No quedan horas esta semana. Escríbanos a contacto@agentocloud.cl y coordinamos."
 estados:
   grafico_no_carga: "No pudimos cargar el gráfico. El resumen está más abajo."
 pagina_404:
   titulo: "Esta página no existe."
-  texto: "Vuelva al inicio o escríbanos a contacto@agentocloud.com."
+  texto: "Vuelva al inicio o escríbanos a contacto@agentocloud.cl."
   boton: "Volver al inicio"
 formato:
   separador_miles: "."
@@ -130,7 +130,7 @@ interfaz:
   balance_no_cierra: "≠"
   limite: "Límite"
   extraccion_unidad: "l/s"
-  sin_script_formulario: "Si el formulario no se envía, escríbanos a contacto@agentocloud.com."
+  sin_script_formulario: "Si el formulario no se envía, escríbanos a contacto@agentocloud.cl."
   abre_en_otra_pestana: "(se abre en otra pestaña)"
 ---
 

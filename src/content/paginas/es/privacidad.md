@@ -13,7 +13,7 @@ seo:
 
 ## Quién es responsable de sus datos
 
-Francisco Ramírez Morales, fundador de Agento Cloud, mientras la sociedad está en formación. Contacto: contacto@agentocloud.com.
+Francisco Ramírez Morales, fundador de Agento Cloud, mientras la sociedad está en formación. Contacto: contacto@agentocloud.cl.
 
 ## Qué datos recibimos
 
@@ -37,7 +37,7 @@ Mientras dure la conversación con usted y hasta 24 meses después del último c
 
 ## Sus derechos
 
-Puede pedir acceder a sus datos, corregirlos, eliminarlos u oponerse a su uso escribiendo a contacto@agentocloud.com. Le responderemos dentro del plazo que fija la ley. Si no queda conforme, puede recurrir a la autoridad de protección de datos personales.
+Puede pedir acceder a sus datos, corregirlos, eliminarlos u oponerse a su uso escribiendo a contacto@agentocloud.cl. Le responderemos dentro del plazo que fija la ley. Si no queda conforme, puede recurrir a la autoridad de protección de datos personales.
 
 ## Cambios
 

@@ -21,7 +21,7 @@ organizacion:
   nombre: "Agento Cloud"
   descripcion: "Agento Cloud builds agentic operational twins of pumps, tanks and wells: artificial intelligence agents that read the data the operation already has, find the cause of each deviation with physical evidence, recommend what to do and what waiting costs, and measure the savings."
   url: "https://agentocloud.com"
-  correo: "contacto@agentocloud.com"
+  correo: "contacto@agentocloud.cl"
   ciudad: "Santiago, Chile"
 navegacion:
   saltar_al_contenido: "Skip to content"
@@ -93,13 +93,13 @@ formulario:
     nombre_vacio: "Your name is missing."
     correo_vacio: "Your email is missing."
     empresa_vacia: "Your company name is missing."
-    envio: "We couldn't send the form. Check your connection and try again, or write to contacto@agentocloud.com."
-    agenda_sin_horas: "No times left this week. Write to contacto@agentocloud.com and we'll find one."
+    envio: "We couldn't send the form. Check your connection and try again, or write to contacto@agentocloud.cl."
+    agenda_sin_horas: "No times left this week. Write to contacto@agentocloud.cl and we'll find one."
 estados:
   grafico_no_carga: "We couldn't load the chart. The summary is below."
 pagina_404:
   titulo: "This page doesn't exist."
-  texto: "Go back to the home page or write to contacto@agentocloud.com."
+  texto: "Go back to the home page or write to contacto@agentocloud.cl."
   boton: "Back to home"
 formato:
   separador_miles: ","
@@ -130,7 +130,7 @@ interfaz:
   balance_no_cierra: "≠"
   limite: "Limit"
   extraccion_unidad: "L/s"
-  sin_script_formulario: "If the form doesn't send, write to contacto@agentocloud.com."
+  sin_script_formulario: "If the form doesn't send, write to contacto@agentocloud.cl."
   abre_en_otra_pestana: "(opens in a new tab)"
 ---
 

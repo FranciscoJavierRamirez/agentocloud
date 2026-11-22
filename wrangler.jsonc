@@ -12,6 +12,6 @@
 
   // Para el formulario (ver README › Despliegue):
   // "send_email": [{ "name": "EMAIL" }],
-  // "vars": { "CORREO_REMITENTE": "web@agentocloud.com", "CORREO_DESTINO": "contacto@agentocloud.com" }
+  // "vars": { "CORREO_REMITENTE": "web@agentocloud.cl", "CORREO_DESTINO": "contacto@agentocloud.cl" }
   // Secreto: wrangler secret put TURNSTILE_SECRET
 }

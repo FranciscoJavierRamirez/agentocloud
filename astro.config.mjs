@@ -16,8 +16,12 @@ const fuente = (name, cssVariable, weights, fallbacks) => ({
   fallbacks,
 });
 
+// Dirección pública del sitio: canónica, imagen para compartir (WhatsApp, LinkedIn), hreflang y mapa del sitio.
+// Borrador en Cloudflare Pages mientras se elige el dominio principal. También se puede fijar con la variable SITIO_URL.
+const sitio = process.env.SITIO_URL || 'https://agentocloud.pages.dev';
+
 export default defineConfig({
-  site: 'https://agentocloud.com',
+  site: sitio,
   output: 'static',
   trailingSlash: 'always',
   compressHTML: true,

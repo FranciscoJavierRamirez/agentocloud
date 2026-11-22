@@ -20,7 +20,7 @@ seo:
 organizacion:
   nombre: "Agento Cloud"
   descripcion: "Agento Cloud builds agentic operational twins of pumps, tanks and wells: artificial intelligence agents that read the data the operation already has, find the cause of each deviation with physical evidence, recommend what to do and what waiting costs, and measure the savings."
-  url: "https://agentocloud.com"
+  url: "https://agentocloud.cl"
   correo: "contacto@agentocloud.cl"
   ciudad: "Santiago, Chile"
 navegacion:

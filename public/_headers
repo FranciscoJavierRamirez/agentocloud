@@ -1,4 +1,4 @@
-# Cabeceras de seguridad para los recursos estáticos (Cloudflare Workers Static Assets).
+# Cabeceras de seguridad del sitio (Cloudflare Pages).
 # La CSP con hashes va en cada página (<meta>, generada por Astro: astro.config.mjs › security.csp);
 # aquí va lo que un <meta> no puede expresar. El endpoint /api/contacto pone sus propias cabeceras.
 /*
@@ -11,4 +11,11 @@
   Cross-Origin-Opener-Policy: same-origin
 
 /sistema/*
+  X-Robots-Tag: noindex, nofollow
+
+# Borrador en Cloudflare Pages: no se indexa. El dominio principal (agentocloud.cl) sí.
+https://agentocloud.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+https://:version.agentocloud.pages.dev/*
   X-Robots-Tag: noindex, nofollow

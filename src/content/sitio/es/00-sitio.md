@@ -20,7 +20,7 @@ seo:
 organizacion:
   nombre: "Agento Cloud"
   descripcion: "Agento Cloud crea gemelos agénticos operacionales de bombas, estanques y pozos: agentes de inteligencia artificial que leen los datos que la operación ya tiene, encuentran la causa de cada desviación con evidencia física, recomiendan qué hacer y cuánto cuesta esperar, y miden el ahorro."
-  url: "https://agentocloud.com"
+  url: "https://agentocloud.cl"
   correo: "contacto@agentocloud.cl"
   ciudad: "Santiago, Chile"
 navegacion:

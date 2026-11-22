@@ -11,7 +11,7 @@
   "workers_dev": true
 
   // Al pasar al dominio propio (www y el otro dominio redirigen aquí con reglas 301 en el panel):
-  // "routes": [{ "pattern": "agentocloud.com", "custom_domain": true }],
+  // "routes": [{ "pattern": "agentocloud.cl", "custom_domain": true }],
 
   // Para el formulario (ver README › Despliegue):
   // "send_email": [{ "name": "EMAIL" }],

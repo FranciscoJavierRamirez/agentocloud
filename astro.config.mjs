@@ -17,8 +17,9 @@ const fuente = (name, cssVariable, weights, fallbacks) => ({
 });
 
 // Dirección pública del sitio: canónica, imagen para compartir (WhatsApp, LinkedIn), hreflang y mapa del sitio.
-// Borrador en Cloudflare Pages mientras se elige el dominio principal. También se puede fijar con la variable SITIO_URL.
-const sitio = process.env.SITIO_URL || 'https://agentocloud.pages.dev';
+// Dominio principal: agentocloud.cl (decidido el 22-nov-2026); agentocloud.com y www redirigen aquí con 301.
+// El borrador en *.pages.dev no se indexa (public/_headers). También se puede fijar con la variable SITIO_URL.
+const sitio = process.env.SITIO_URL || 'https://agentocloud.cl';
 
 export default defineConfig({
   site: sitio,

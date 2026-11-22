@@ -1,6 +1,6 @@
 # Sitio web de Agento Cloud
 
-Sitio estático de `agentocloud.com`, en español (`/`) e inglés (`/en/`): inicio, aviso de privacidad y 404.
+Sitio estático de `agentocloud.cl` (dominio principal; `agentocloud.com` redirige), en español (`/`) e inglés (`/en/`): inicio, aviso de privacidad y 404.
 La página interna de sistema (`/sistema/`) solo existe en `pnpm dev`: la compilación de producción no la genera.
 Astro 7 · Tailwind CSS 4 · React 19 solo en islas · contenido en colecciones · Cloudflare Pages.
 
@@ -113,8 +113,9 @@ con error. Para activarlo hay dos caminos: publicar como Worker (`npx wrangler d
 `TURNSTILE_SECRET` en `wrangler.jsonc`) o llevar el endpoint a una Pages Function. En ambos casos: Cloudflare Email Service con el
 dominio remitente verificado y Turnstile con su clave pública en `PUBLIC_TURNSTILE_SITEKEY`.
 
-**Dominio.** En el proyecto de Pages: *Dominios personalizados → Configurar un dominio*. `www` y el otro dominio redirigen al
-principal con reglas 301 (*Rules → Redirect Rules*).
+**Dominio.** El principal es `agentocloud.cl` (22-nov-2026): es el `site` de `astro.config.mjs` (canónica, imagen para compartir, hreflang y mapa del sitio).
+En el proyecto de Pages: *Dominios personalizados → Configurar un dominio* → `agentocloud.cl`. `www.agentocloud.cl` y `agentocloud.com` redirigen al
+principal con reglas 301 (*Rules → Redirect Rules*). La dirección `*.pages.dev` responde con `X-Robots-Tag: noindex` (`public/_headers`).
 
 Si conecta analítica o cambia de proveedor de agenda, agregue su origen a la CSP en `astro.config.mjs` (`security.csp`).
 

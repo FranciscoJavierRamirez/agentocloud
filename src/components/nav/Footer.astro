@@ -3,6 +3,7 @@
 import Logo from '@/components/media/Logo.astro';
 import TwinFigure from '@/components/media/TwinFigure.astro';
 import ArrowLink from '@/components/ui/ArrowLink.astro';
+import TechLabel from '@/components/ui/TechLabel.astro';
 import { comunes, destino, ruta, seccion } from '@/lib/i18n';
 interface Props { lang: string }
 const { lang } = Astro.props;
@@ -15,7 +16,8 @@ const [t, pie] = await Promise.all([comunes(lang), seccion(lang, 'pie')]);
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
       <div class="flex flex-col gap-6 sm:col-span-2 lg:col-span-6">
         <Logo alt={pie.logo_alt} trazar class="h-12 w-auto self-start" />
-        <p class="rotulo text-texto-2 max-w-lectura">{pie.lema}</p>
+        <TechLabel texto={pie.lema} class="sm:hidden" />
+        <p class="rotulo text-texto-2 max-w-lectura max-sm:hidden">{pie.lema}</p>
       </div>
       <ul class="flex flex-col lg:col-span-3">
         {t.navegacion.enlaces.map((enlace) => <li><a href={destino(lang, enlace)} class="text-cuerpo text-tinta min-h-toque flex items-center font-medium no-underline hover:underline hover:underline-offset-4">{enlace.texto}</a></li>)}

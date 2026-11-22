@@ -86,8 +86,8 @@
   --text-titular--line-height: 1.05;
   --text-titular--letter-spacing: -0.02em;
   --text-titular--font-weight: 700;
-  --text-seccion: clamp(1.625rem, 1.317rem + 1.315vw, 2.5rem);    /* 26 → 40 px */
-  --text-seccion--line-height: 1.05;
+  --text-seccion: clamp(1.875rem, 1.6rem + 1.1vw, 2.5rem);         /* 30 → 40 px (26 px se veía apretado en celular) */
+  --text-seccion--line-height: 1.12;
   --text-seccion--letter-spacing: -0.02em;
   --text-seccion--font-weight: 600;
   --text-cifra: clamp(3rem, 1.592rem + 6.009vw, 7rem);            /* 48 → 112 px · cifra grande */
@@ -108,7 +108,6 @@
   /* Espaciado con nombre. La escala numérica de Tailwind sigue disponible (1 = 4 px):
      px-5 = 20 px, pl-7 = 28 px, min-h-12 = 48 px. */
   --spacing-margen: 1.25rem;          /* 20 px · margen lateral en celular */
-  --spacing-margen-linea: 1.75rem;    /* 28 px · margen izquierdo, donde corre la línea de balance */
   --spacing-toque: 3rem;              /* 48 px · alto mínimo de un control */
   --spacing-entre-controles: 0.5rem;  /* 8 px */
   --spacing-seccion: clamp(3.5rem, 2.62rem + 3.756vw, 6rem);       /* 56 → 96 px por lado (antes 64 → 144: dejaba 288 px vacíos entre secciones) */
@@ -177,9 +176,10 @@
   font-size: var(--text-rotulo);
   line-height: 1.35;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
+  @media (min-width: 40rem) { letter-spacing: 0.1em; }
 }
 
 /* Las dos líneas del gemelo. Requieren pathLength="1" en el <path>. */

@@ -47,7 +47,7 @@
   width: 100%;
   max-width: var(--container-pagina);
   margin-inline: auto;
-  padding-inline: var(--spacing-margen-linea) var(--spacing-margen);
+  padding-inline: var(--spacing-margen); /* celular: 20 px a cada lado; la línea de balance aparece desde md */
   @media (min-width: 47.5rem) { padding-inline: 3.5rem 2.5rem; }
 }
 
@@ -245,8 +245,18 @@ dialog.hoja::backdrop { background: rgb(var(--sombra-rgb) / 0.45); }
   @media (min-width: 64rem) { grid-template-columns: minmax(0, 1fr) 17rem; }
 }
 @utility grilla-lecturas {
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  & > :first-child { grid-column: 1 / -1; }
+  @media (min-width: 40rem) {
+    grid-template-columns: auto 1fr 1fr;
+    & > :first-child { grid-column: auto; }
+  }
   @media (min-width: 64rem) { grid-template-columns: 1fr; }
+}
+
+/* Ficha de persona desde md: el retrato ocupa dos filas y la bio sigue justo bajo el nombre. */
+@utility filas-ficha {
+  grid-template-rows: auto 1fr;
 }
 
 /* Alto del hero: deja asomar la franja siguiente (≈ 88 % en escritorio), con unidades dinámicas. */

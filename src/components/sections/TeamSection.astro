@@ -18,14 +18,22 @@ const ampliada = variante === 'ampliada';
     <ul class="grid gap-10 md:grid-cols-2">
       {
         s.personas.map((persona) => (
-          <li class:list={['grid gap-5', ampliada ? 'lg:grid-cols-5' : 'grid-cols-3 items-start']}>
-            <div class:list={[ampliada ? 'max-w-60 lg:col-span-2' : 'col-span-1']}><Portrait codigo={persona.retrato} alt={persona.foto_alt} /></div>
-            <div class:list={['flex flex-col gap-2', ampliada ? 'lg:col-span-3' : 'col-span-2']}>
+          <li class:list={['grid', ampliada ? 'gap-5 lg:grid-cols-5' : 'md:filas-ficha grid-cols-3 items-start gap-x-5 gap-y-4']}>
+            <div class:list={[ampliada ? 'max-w-60 lg:col-span-2' : 'col-span-1 md:row-span-2']}><Portrait codigo={persona.retrato} alt={persona.foto_alt} /></div>
+            <div class:list={['flex flex-col gap-2', ampliada ? 'lg:col-span-3' : 'col-span-2 max-md:self-center']}>
               <h3 class="font-display text-sub font-semibold">{persona.nombre}</h3>
               <p class="rotulo text-texto-2">{persona.cargo}</p>
-              <p class="text-cuerpo text-texto-2">{ampliada ? persona.bio : persona.bio_corta}</p>
-              {persona.linkedin && <ArrowLink href={persona.linkedin} externo avisoExterno={t.interfaz.abre_en_otra_pestana}>{persona.linkedin_texto}</ArrowLink>}
+              {ampliada && <p class="text-cuerpo text-texto-2">{persona.bio}</p>}
             </div>
+            {
+              !ampliada && (
+                <div class="col-span-3 flex flex-col gap-2 md:col-span-2 md:col-start-2">
+                  <p class="text-cuerpo text-texto-2">{persona.bio_corta}</p>
+                  {persona.linkedin && <ArrowLink href={persona.linkedin} externo avisoExterno={t.interfaz.abre_en_otra_pestana}>{persona.linkedin_texto}</ArrowLink>}
+                </div>
+              )
+            }
+            {ampliada && persona.linkedin && <ArrowLink href={persona.linkedin} externo avisoExterno={t.interfaz.abre_en_otra_pestana} class="lg:col-span-3 lg:col-start-3">{persona.linkedin_texto}</ArrowLink>}
           </li>
         ))
       }

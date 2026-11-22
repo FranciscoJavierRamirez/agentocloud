@@ -5,7 +5,7 @@ interface Props { total: number }
 const total = String(Astro.props.total).padStart(2, '0');
 ---
 
-<div class="group pointer-events-none fixed top-16 bottom-0 left-2 z-(--z-capa-gemelo) w-4 md:left-5" aria-hidden="true" data-carril>
+<div class="group pointer-events-none fixed top-16 bottom-0 left-5 z-(--z-capa-gemelo) w-4 max-md:hidden" aria-hidden="true" data-carril>
   <span class="border-patina absolute inset-y-0 left-0 border-l border-dashed opacity-70"></span>
   <span class="carril-avance bg-tinta ease-resorte absolute inset-y-0 left-1 w-px transition duration-(--dur-3) group-data-brecha:translate-x-1.5"></span>
   <span class="bg-cobre/30 ease-agento absolute inset-y-0 left-px w-1.5 opacity-0 transition duration-(--dur-2) group-data-brecha:opacity-100"></span>

@@ -1,0 +1,229 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Agento Cloud · tema para Tailwind CSS 4 · PROPUESTA v0.1 · 20-nov-2026
+   Probado: compila con tailwindcss 4.3.5 (@tailwindcss/cli).
+
+   Qué es: el puente entre tokens/agento.css y las utilidades de Tailwind.
+   Qué manda: los valores de color, fuente, forma y movimiento salen de
+   tokens/agento.css y NO se repiten aquí: este archivo solo los expone.
+   Lo marcado NUEVO todavía no existe en los tokens. Es una propuesta de partida
+   para ajustar en Figma; lo que se apruebe vuelve a
+   tokens/agento.tokens.json (fuente única) y se regenera este archivo.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@import "tailwindcss";
+@import "./agento.css";          /* tokens/agento.css, sin editar. Ajustar la ruta según dónde quede en el repositorio */
+/* @import "tw-animate-css"; */  /* opcional: entradas y salidas de hojas, menús y acordeones */
+
+/* El sitio es claro. `dark:` no sigue al sistema operativo: solo aplica dentro de
+   data-theme="dark" o .tema-oscuro (sección Seguridad y marcos de capturas del producto). */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, .tema-oscuro, .tema-oscuro *));
+
+/* 1 · Se apaga la paleta, las fuentes y los cortes de Tailwind: solo existe lo de la marca.
+      Nadie puede escribir bg-blue-500 ni font-serif por descuido. */
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+  --breakpoint-*: initial;
+  --radius-*: initial;
+  --ease-*: initial;
+  --animate-*: initial;
+}
+
+/* 2 · Tokens existentes, expuestos como utilidades.
+      `inline` hace que la utilidad lea la variable viva: dentro del tema oscuro,
+      bg-fondo o text-tinta cambian solos, sin escribir dark: en cada clase. */
+@theme inline {
+  /* Superficies y texto → bg-fondo, bg-sup, bg-sup-2, text-tinta, text-texto-2, border-linea */
+  --color-fondo: var(--fondo);
+  --color-sup: var(--sup);
+  --color-sup-2: var(--sup-2);
+  --color-tinta: var(--tinta);
+  --color-texto-2: var(--texto-2);
+  --color-linea: var(--linea);
+  --color-sobre: var(--sobre);
+
+  /* El modelo y la brecha → stroke-patina, text-patina-texto, fill-cobre, text-cobre-texto.
+     Regla: cobre solo en la brecha de un balance y su causa. Nunca en botones ni adornos. */
+  --color-patina: var(--patina);
+  --color-patina-texto: var(--patina-texto);
+  --color-cobre: var(--cobre);
+  --color-cobre-texto: var(--cobre-texto);
+
+  /* Estados: siempre con texto o forma además del color */
+  --color-ok: var(--ok);
+  --color-vigilar: var(--vigilar);
+  --color-alerta: var(--alerta);
+
+  /* Relieve */
+  --color-curva: var(--curva);
+  --color-curva-maestra: var(--curva-maestra);
+
+  /* Tipografía → font-display (Schibsted Grotesk), font-sans (Hanken Grotesk), font-mono (Martian Mono) */
+  --font-display: var(--display);
+  --font-sans: var(--texto);
+  --font-mono: var(--mono);
+
+  /* Forma → rounded-tarjeta (10 px), rounded-control (8 px) */
+  --radius-tarjeta: var(--r);
+  --radius-control: var(--r-ctrl);
+
+  /* Curvas → ease-agento (todo lo que entra o responde), ease-resorte (solo anillo gemelo y brecha) */
+  --ease-agento: var(--ease);
+  --ease-resorte: var(--resorte);
+}
+
+/* 3 · NUEVO: lo que falta en los tokens para poder componer. Propuesta. */
+@theme {
+  /* Cortes. Se diseña a 375 px y se amplía. 760 px es el corte que ya usa el laboratorio. */
+  --breakpoint-sm: 30rem;      /*  480 px · teléfono grande */
+  --breakpoint-md: 47.5rem;    /*  760 px · tableta; aquí el texto pasa de 16 a 17 px */
+  --breakpoint-lg: 64rem;      /* 1024 px · dos columnas */
+  --breakpoint-xl: 80rem;      /* 1280 px */
+  --breakpoint-2xl: 90rem;     /* 1440 px · ancho de referencia de la capa del gemelo */
+
+  /* Escala tipográfica fluida entre 375 y 1440 px. Rangos de `04` §3. */
+  --text-titular: clamp(2.5rem, 1.444rem + 4.507vw, 5.5rem);      /* 40 → 88 px */
+  --text-titular--line-height: 1.05;
+  --text-titular--letter-spacing: -0.02em;
+  --text-titular--font-weight: 700;
+  --text-seccion: clamp(1.625rem, 1.317rem + 1.315vw, 2.5rem);    /* 26 → 40 px */
+  --text-seccion--line-height: 1.05;
+  --text-seccion--letter-spacing: -0.02em;
+  --text-seccion--font-weight: 600;
+  --text-cifra: clamp(3rem, 1.592rem + 6.009vw, 7rem);            /* 48 → 112 px · cifra grande */
+  --text-cifra--line-height: 1;
+  --text-bajada: clamp(1.08rem, 1.003rem + 0.331vw, 1.3rem);      /* ≈17 → 21 px */
+  --text-bajada--line-height: 1.45;
+  --text-sub: 1.15rem;                                             /* título de tarjeta */
+  --text-sub--line-height: 1.2;
+  --text-cuerpo: 1rem;                                             /* 16 px; 17 px desde md con md:text-cuerpo-lg */
+  --text-cuerpo--line-height: 1.6;
+  --text-cuerpo-lg: 1.0625rem;
+  --text-cuerpo-lg--line-height: 1.6;
+  --text-rotulo: 0.75rem;                                          /* 12 px · rótulo técnico (antes 11 px: se leía mal en celular) */
+  --text-rotulo--line-height: 1.35;
+  --text-nota: 0.75rem;                                            /* 12 px · mínimo absoluto (antes 10,5 px) */
+  --text-nota--line-height: 1.45;
+
+  /* Espaciado con nombre. La escala numérica de Tailwind sigue disponible (1 = 4 px):
+     px-5 = 20 px, pl-7 = 28 px, min-h-12 = 48 px. */
+  --spacing-margen: 1.25rem;          /* 20 px · margen lateral en celular */
+  --spacing-margen-linea: 1.75rem;    /* 28 px · margen izquierdo, donde corre la línea de balance */
+  --spacing-toque: 3rem;              /* 48 px · alto mínimo de un control */
+  --spacing-entre-controles: 0.5rem;  /* 8 px */
+  --spacing-seccion: clamp(3.5rem, 2.62rem + 3.756vw, 6rem);       /* 56 → 96 px por lado (antes 64 → 144: dejaba 288 px vacíos entre secciones) */
+
+  /* Anchos → max-w-pagina, max-w-lectura */
+  --container-pagina: 80rem;          /* 1280 px. El laboratorio usa 1080 px: a decidir en Figma */
+  --container-lectura: 62ch;          /* máximo de `04` §3 */
+
+  /* Proporciones de imagen → aspect-panorama, aspect-foto, aspect-retrato, aspect-vertical, aspect-banda */
+  --aspect-panorama: 21 / 9;
+  --aspect-foto: 16 / 9;
+  --aspect-retrato: 4 / 5;
+  --aspect-vertical: 9 / 16;
+  --aspect-banda: 3 / 1;
+  --aspect-tarjeta: 4 / 3;            /* tarjetas con foto desde tableta: la mitad de alto que 4:5 */
+
+  /* Animaciones de utilidad (lo coreografiado va en la librería de animación, no aquí) */
+  --animate-trazar: trazar var(--dur-3) var(--ease) both;      /* una línea se dibuja */
+  --animate-subir: subir var(--dur-2) var(--ease) both;        /* texto que entra 20 px */
+  --animate-abrir: abrir var(--dur-3) var(--resorte) both;     /* la brecha se abre */
+
+  @keyframes trazar {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes subir {
+    from { opacity: 0; translate: 0 20px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  @keyframes abrir {
+    from { scale: 1 0.2; opacity: 0; }
+    to { scale: 1 1; opacity: 1; }
+  }
+}
+
+/* 4 · NUEVO: capas. Variables simples, se usan como z-(--z-nav). */
+:root {
+  --z-capa-gemelo: 10;   /* SVG sobre la foto */
+  --z-rotulo: 20;        /* rótulo técnico sobre la capa */
+  --z-nav: 100;
+  --z-barra-fija: 110;   /* acción principal en celular */
+  --z-hoja: 200;         /* hoja inferior y menú */
+  --z-dialogo: 210;
+  /* Distancias de movimiento que hoy están sueltas en `15` */
+  --mov-entrada: 20px;   /* titular y bajada al cargar */
+  --mov-cota: 12px;      /* título de sección sobre su línea */
+  --mov-desfase: 12px;   /* desfase máximo foto–gemelo en escritorio */
+  --mov-desfase-celular: 6px;
+  --mov-escalon: 110ms;  /* desfase entre elementos que entran en fila */
+}
+
+/* 5 · Base */
+@layer base {
+  html { background: var(--fondo); color: var(--tinta); }
+  body { font-family: var(--texto); font-size: var(--text-cuerpo); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; }
+  p { max-width: var(--container-lectura); }
+  :focus-visible { outline: 2px solid var(--tinta); outline-offset: 3px; border-radius: 4px; }
+}
+
+/* 6 · Utilidades propias de la marca */
+
+/* Rótulo técnico: activo distintivo n.º 4. <p class="rotulo">PZ-12 · −2,5 L/S · …</p> */
+@utility rotulo {
+  font-family: var(--mono);
+  font-size: var(--text-rotulo);
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Las dos líneas del gemelo. Requieren pathLength="1" en el <path>. */
+@utility linea-esperada {
+  fill: none;
+  stroke: var(--patina);
+  stroke-width: 1.25;
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+}
+@utility linea-medida {
+  fill: none;
+  stroke: var(--tinta);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+@utility brecha {
+  fill: rgb(var(--cobre-rgb) / 0.18);
+  stroke: var(--cobre);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Borde iluminado del lado del sol (1 px, con máscara). Sustituye a las sombras grises. */
+@utility borde-sol {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(var(--sol-angulo), rgb(var(--sol-rgb) / 0.35), transparent 45%);
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+}
+
+/* 7 · Movimiento reducido: todo en su estado final. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

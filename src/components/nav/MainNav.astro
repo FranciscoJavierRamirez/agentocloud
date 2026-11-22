@@ -1,0 +1,32 @@
+---
+// Cuatro entradas. La actual se marca con la línea doble de balance, chica: el mismo signo en todas las escalas.
+import { comunes, destino } from '@/lib/i18n';
+interface Props { lang: string; vertical?: boolean; class?: string }
+const { lang, vertical = false, class: clase } = Astro.props;
+const t = await comunes(lang);
+const actual = Astro.url.pathname;
+---
+
+<ul class:list={[vertical ? 'flex flex-col' : 'flex items-center gap-1', clase]}>
+  {
+    t.navegacion.enlaces.map((enlace) => {
+      const href = destino(lang, enlace);
+      return (
+        <li>
+          <a
+            href={href}
+            aria-current={enlace.ruta !== undefined && actual === href ? 'page' : undefined}
+            data-nav-ancla={enlace.ancla}
+            class:list={['group text-cuerpo text-tinta min-h-toque relative flex items-center font-medium whitespace-nowrap no-underline', vertical ? 'border-linea border-b py-2' : 'px-2 xl:px-3']}
+          >
+            {enlace.texto}
+            <span aria-hidden="true" class:list={['pointer-events-none absolute flex flex-col gap-0.5 opacity-0 transition duration-(--dur-1) en-actual:opacity-100', vertical ? 'top-1/2 -left-4 w-2' : 'inset-x-2 bottom-2 xl:inset-x-3']}>
+              <span class="border-patina block border-t border-dashed"></span>
+              <span class="border-tinta block border-t"></span>
+            </span>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

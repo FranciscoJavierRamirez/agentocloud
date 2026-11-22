@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+interface Props { href: string; externo?: boolean; avisoExterno?: string; class?: string; [atributo: string]: unknown }
+const { href, externo = false, avisoExterno, class: clase, ...resto } = Astro.props;
+// La flecha va pegada a la última palabra: si el enlace se parte en dos líneas, nunca queda sola en una línea nueva.
+// Con texto simple se separa la última palabra para envolverla junto con la flecha; con marcado, la flecha va al final.
+const html = (await Astro.slots.render('default')).trim();
+const corte = html.includes('<') ? -1 : html.lastIndexOf(' ');
+const inicio = corte > 0 ? html.slice(0, corte + 1) : '';
+const ultima = corte > 0 ? html.slice(corte + 1) : html;
+---
+
+<a
+  href={href}
+  class:list={['group text-tinta text-cuerpo decoration-linea inline-flex min-h-toque items-center gap-2 font-medium underline underline-offset-4', clase]}
+  {...externo ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+  {...resto}
+>
+  <span
+    ><Fragment set:html={inicio} /><span class="whitespace-nowrap"
+      ><Fragment set:html={ultima} />{externo && avisoExterno && <span class="sr-only"> {avisoExterno}</span>}<Icon
+        nombre={externo ? 'externo' : 'flecha'}
+        tamano="s"
+        class="ease-agento ml-2 inline-block align-text-bottom transition duration-(--dur-1) group-hover:translate-x-0.5"
+      /></span
+    ></span
+  >
+</a>

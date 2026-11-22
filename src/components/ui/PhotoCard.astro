@@ -1,0 +1,14 @@
+---
+// Tarjeta con foto y su capa del gemelo: 4:5 en celular, 4:3 desde tableta (recorta el lienzo según el foco de la ficha).
+import TwinFigure from '@/components/media/TwinFigure.astro';
+interface Props { lang: string; titulo: string; texto: string; imagen: { codigo: string; alt: string }; rotulo?: string | null }
+const { lang, titulo, texto, imagen, rotulo } = Astro.props;
+---
+
+<article class="borde-sol rounded-tarjeta border-linea bg-sup @container flex flex-col overflow-hidden border" data-borde-sol>
+  <TwinFigure lang={lang} codigo={imagen.codigo} alt={imagen.alt} rotulo={rotulo ?? undefined} ajuste="llenar" chica class="aspect-retrato md:aspect-tarjeta" />
+  <div class="flex flex-col gap-2 p-6">
+    <h3 class="font-display text-sub font-semibold">{titulo}</h3>
+    <p class="text-cuerpo text-texto-2">{texto}</p>
+  </div>
+</article>

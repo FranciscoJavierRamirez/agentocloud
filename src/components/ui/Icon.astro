@@ -1,0 +1,24 @@
+---
+// Iconos Lucide: una sola familia, trazo de 1,6 px, tres tamaños (16, 20 y 24 px). Siempre decorativos: el texto va al lado.
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Menu, Minus, Plus, X, Lock, Mail } from '@lucide/astro';
+
+const iconos = {
+  flecha: ArrowRight,
+  externo: ArrowUpRight,
+  anterior: ChevronLeft,
+  siguiente: ChevronRight,
+  menu: Menu,
+  menos: Minus,
+  mas: Plus,
+  cerrar: X,
+  candado: Lock,
+  correo: Mail,
+} as const;
+
+interface Props { nombre: keyof typeof iconos; tamano?: 's' | 'm' | 'l'; class?: string }
+const { nombre, tamano = 'm', class: clase } = Astro.props;
+const Componente = iconos[nombre];
+const lado = { s: 16, m: 20, l: 24 }[tamano];
+---
+
+<Componente size={lado} stroke-width={1.6} aria-hidden="true" class:list={['shrink-0', clase]} />

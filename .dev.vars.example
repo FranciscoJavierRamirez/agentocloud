@@ -1,0 +1,4 @@
+# Secretos del Worker para desarrollo local. Copiar a .dev.vars (ignorado por git). En producción: wrangler secret put.
+TURNSTILE_SECRET=
+CORREO_REMITENTE=
+CORREO_DESTINO=

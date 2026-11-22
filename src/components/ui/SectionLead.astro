@@ -1,0 +1,12 @@
+---
+// Entrada de sección a dos columnas: el título (con su cota) a la izquierda y el texto a la derecha.
+// En celular se apilan. Evita la columna angosta con media página vacía.
+import SectionHeading from './SectionHeading.astro';
+interface Props { titulo: string; id?: string; rotulo?: string; class?: string }
+const { titulo, id, rotulo, class: clase } = Astro.props;
+---
+
+<div class:list={['grid items-start gap-x-12 gap-y-6 lg:grid-cols-12', clase]}>
+  <SectionHeading titulo={titulo} id={id} rotulo={rotulo} class="lg:col-span-5" />
+  <div class="flex flex-col gap-6 lg:col-span-7 lg:pt-1"><slot /></div>
+</div>

@@ -1,0 +1,39 @@
+---
+// Rótulo técnico (activo distintivo n.º 4): segmentos separados por «·», texto real, se apila en celular.
+import { segmentos } from '@/lib/formato';
+interface Props {
+  texto: string;
+  /** sal: sobre fondo liso · foto: con placa detrás para asegurar el contraste */
+  sobre?: 'sal' | 'foto';
+  /** Marca de brecha: un anillo de cobre delante del código */
+  brecha?: boolean;
+  as?: 'p' | 'span' | 'div';
+  apilar?: boolean;
+  class?: string;
+  [atributo: string]: unknown;
+}
+const { texto, sobre = 'sal', brecha = false, as: Etiqueta = 'p', apilar = true, class: clase, ...resto } = Astro.props;
+const partes = segmentos(texto);
+---
+
+<Etiqueta
+  class:list={[
+    'rotulo flex gap-x-2 gap-y-0.5',
+    apilar ? 'flex-col sm:flex-row sm:flex-wrap sm:items-center' : 'flex-row flex-wrap items-center',
+    sobre === 'foto' ? 'velo text-tinta rounded-control w-fit px-3 py-2' : 'text-texto-2',
+    clase,
+  ]}
+  {...resto}
+>
+  {
+    partes.map((parte, i) => (
+      <>
+        {i > 0 && <span aria-hidden="true" class:list={[apilar && 'max-sm:hidden']}>·</span>}
+        <span class:list={['inline-flex items-center gap-2', apilar ? 'sm:whitespace-nowrap' : 'whitespace-nowrap']} data-segmento>
+          {i === 0 && brecha && <span aria-hidden="true" class="border-cobre size-2 shrink-0 rounded-full border-2" />}
+          {parte}
+        </span>
+      </>
+    ))
+  }
+</Etiqueta>

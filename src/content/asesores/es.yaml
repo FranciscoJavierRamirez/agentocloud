@@ -1,0 +1,3 @@
+# Solo se nombran asesores con aceptación escrita. Con la lista vacía, la sección no se renderiza.
+# Formato: - { nombre: "", cargo: "", bio: "", linkedin: "" }
+lista: []

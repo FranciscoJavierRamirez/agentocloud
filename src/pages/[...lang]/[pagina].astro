@@ -1,0 +1,46 @@
+---
+// Páginas interiores, desde la colección `paginas`: Empresa y aviso de privacidad.
+// Una página nueva de contenido es un archivo nuevo en src/content/paginas/<idioma>/.
+import { getCollection, render } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import LegalLayout from '@/layouts/LegalLayout.astro';
+import OriginStory from '@/components/sections/OriginStory.astro';
+import TeamSection from '@/components/sections/TeamSection.astro';
+import FromChile from '@/components/sections/FromChile.astro';
+import StageAndPath from '@/components/sections/StageAndPath.astro';
+import Advisors from '@/components/sections/Advisors.astro';
+import { idiomasActivos, parametroIdioma } from '@/lib/i18n';
+
+export async function getStaticPaths() {
+  const todas = await getCollection('paginas');
+  return todas
+    .filter((p) => idiomasActivos.includes(p.id.split('/')[0]))
+    .map((entrada) => {
+      const lang = entrada.id.split('/')[0];
+      // La misma página en los demás idiomas (mismo id), para hreflang y el selector.
+      const rutas = Object.fromEntries(
+        todas.filter((o) => o.data.id === entrada.data.id && idiomasActivos.includes(o.id.split('/')[0])).map((o) => [o.id.split('/')[0], o.data.ruta]),
+      );
+      return { params: { lang: parametroIdioma(lang), pagina: entrada.data.ruta }, props: { lang, entrada, rutas } };
+    });
+}
+const { lang, entrada, rutas } = Astro.props;
+const p = entrada.data;
+const { Content } = await render(entrada);
+---
+
+{
+  p.tipo === 'empresa' ? (
+    <PageLayout lang={lang} titulo={p.titulo} seo={p.seo} cabecera={p.cabecera} cierre={p.cierre} og={p.id} rutas={rutas}>
+      <OriginStory titulo={p.historia.titulo} parrafos={p.historia.parrafos} />
+      <TeamSection lang={lang} variante="ampliada" titulo={p.equipo.titulo} />
+      <FromChile lang={lang} titulo={p.desde_chile.titulo} parrafos={p.desde_chile.parrafos} cifras={p.desde_chile.cifras} />
+      <StageAndPath lang={lang} titulo={p.etapa.titulo} hay={p.etapa.hay} sigue={p.etapa.sigue} />
+      <Advisors lang={lang} titulo={p.asesores.titulo} />
+    </PageLayout>
+  ) : (
+    <LegalLayout lang={lang} titulo={p.titulo} seo={p.seo} actualizado={p.actualizado} og={p.id} rutas={rutas} borrador={p.borrador}>
+      <Content />
+    </LegalLayout>
+  )
+}

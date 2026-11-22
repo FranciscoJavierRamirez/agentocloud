@@ -1,0 +1,23 @@
+---
+// 9 · Dónde estamos: la etapa, con honestidad. Sin animación: la honestidad no se anima.
+// Franja de superficie clara: separa lo que el producto hace (arriba) de quiénes somos (abajo).
+import SectionLead from '@/components/ui/SectionLead.astro';
+import Prose from '@/components/ui/Prose.astro';
+import Button from '@/components/ui/Button.astro';
+import { destino, entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'donde-estamos');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'donde-estamos' }>;
+const { Content } = await render(entrada);
+---
+
+<section id={s.ancla} class="border-linea bg-sup py-seccion border-y" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <div class="contenedor">
+    <SectionLead titulo={s.titulo} id={`titulo-${s.id}`}>
+      <Prose><Content /></Prose>
+      <Button href={destino(lang, s.boton)} flecha class="self-start" data-evento="agendar" data-origen="donde-estamos">{s.boton.texto}</Button>
+    </SectionLead>
+  </div>
+</section>

@@ -1,0 +1,32 @@
+---
+// Selector de idioma. Se construye y no se muestra mientras haya un solo idioma.
+// Lleva a la misma página en el otro idioma; no se redirige por el idioma del navegador.
+import { comunes, idiomasActivos, prefijo } from '@/lib/i18n';
+interface Props { lang: string; rutas?: Record<string, string> }
+const { lang, rutas = {} } = Astro.props;
+const t = await comunes(lang);
+const opciones = t.navegacion.idiomas.filter((i) => idiomasActivos.includes(i.codigo));
+---
+
+{
+  opciones.length > 1 && (
+    <nav aria-label={t.navegacion.idioma_etiqueta}>
+      <ul class="rotulo flex items-center gap-1">
+        {opciones.map((i) => (
+          <li>
+            <a
+              href={`${prefijo(i.codigo)}/${rutas[i.codigo] ? `${rutas[i.codigo]}/` : ''}`}
+              hreflang={i.codigo}
+              lang={i.codigo}
+              aria-current={i.codigo === lang ? 'true' : undefined}
+              aria-label={i.nombre}
+              class="min-h-toque text-texto-2 actual:text-tinta flex items-center px-2 no-underline"
+            >
+              {i.corto}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

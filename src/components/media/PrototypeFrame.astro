@@ -1,0 +1,16 @@
+---
+// La captura del prototipo en su marco oscuro, siempre rotulada. Nunca una pantalla generada con IA.
+import ThemeScope from '@/components/head/ThemeScope.astro';
+import Photo from './Photo.astro';
+import RegistrationMarks from '@/components/ui/RegistrationMarks.astro';
+import RealityNote from '@/components/ui/RealityNote.astro';
+interface Props { lang: string; codigo?: string; alt: string; rotulo: string }
+const { lang, codigo = 'CAP-01', alt, rotulo } = Astro.props;
+---
+
+<ThemeScope as="figure" class="rounded-tarjeta border-linea relative flex flex-col gap-3 border p-4 md:p-6">
+  <RegistrationMarks />
+  <p class="rotulo text-texto-2">{rotulo}</p>
+  <Photo codigo={codigo} alt={alt} sizes="(min-width: 64rem) 50vw, 100vw" class="rounded-control border-linea aspect-foto h-auto w-full border object-cover" />
+  <figcaption><RealityNote lang={lang} tipo="imagen" /></figcaption>
+</ThemeScope>

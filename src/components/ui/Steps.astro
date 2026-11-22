@@ -1,0 +1,18 @@
+---
+// Lista numerada de pasos; bajo cada número se traza una línea fina. El texto de cada paso es opcional.
+interface Props { pasos: { numero: number; titulo: string; texto?: string }[]; class?: string }
+const { pasos, class: clase } = Astro.props;
+---
+
+<ol class:list={['grid gap-8 md:grid-cols-2 xl:grid-cols-4', clase]}>
+  {
+    pasos.map((paso) => (
+      <li class="flex flex-col gap-3" data-paso={paso.numero}>
+        <span class="text-seccion text-tinta font-mono tabular-nums">{String(paso.numero).padStart(2, '0')}</span>
+        <span class="bg-tinta/35 trazo-x block h-px w-full" aria-hidden="true"></span>
+        <h3 class="font-display text-sub font-semibold">{paso.titulo}</h3>
+        {paso.texto && <p class="text-cuerpo text-texto-2">{paso.texto}</p>}
+      </li>
+    ))
+  }
+</ol>

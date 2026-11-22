@@ -1,0 +1,3 @@
+# Advisors are named only with written acceptance. With an empty list, the section is not rendered.
+# Format: - { nombre: "", cargo: "", bio: "", linkedin: "" }
+lista: []

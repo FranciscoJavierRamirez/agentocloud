@@ -1,0 +1,13 @@
+---
+// Rótulo, título y su "cota de entrada": la única transición repetida del sitio.
+import TechLabel from './TechLabel.astro';
+import Dimension from './Dimension.astro';
+interface Props { titulo: string; rotulo?: string; nivel?: 'h1' | 'h2'; id?: string; class?: string }
+const { titulo, rotulo, nivel: Titulo = 'h2', id, class: clase } = Astro.props;
+---
+
+<header class:list={['flex flex-col gap-4', clase]}>
+  {rotulo && <TechLabel texto={rotulo} />}
+  <Titulo id={id} class="font-display text-seccion max-w-lectura">{titulo}</Titulo>
+  <Dimension class="max-w-lectura" />
+</header>

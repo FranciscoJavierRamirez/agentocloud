@@ -1,0 +1,90 @@
+---
+// 4 · La diferencia: la misma curva vista por una alarma y por el gemelo. Trece días antes.
+// Los casos van en una línea de resultado cada uno: el resultado, sin el razonamiento.
+import SectionLead from '@/components/ui/SectionLead.astro';
+import TechLabel from '@/components/ui/TechLabel.astro';
+import Prose from '@/components/ui/Prose.astro';
+import Card from '@/components/ui/Card.astro';
+import Icon from '@/components/ui/Icon.astro';
+import ReliefTexture from '@/components/media/ReliefTexture.astro';
+import AlarmVsTwinChart from '@/components/islands/AlarmVsTwinChart';
+import { comunes, entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'diferencia');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'diferencia' }>;
+const t = await comunes(lang);
+const { Content } = await render(entrada);
+---
+
+<section id={s.ancla} class="py-seccion relative isolate" data-seccion={s.orden} data-brecha aria-labelledby={`titulo-${s.id}`}>
+  <ReliefTexture />
+  <div class="contenedor flex flex-col gap-10">
+    <SectionLead titulo={s.titulo} id={`titulo-${s.id}`}><Prose><Content /></Prose></SectionLead>
+    <Card class="flex flex-col gap-5">
+      <AlarmVsTwinChart
+        client:visible
+        lang={t.lang}
+        instruccion={s.instruccion}
+        vistas={s.vistas}
+        grafico={s.grafico}
+        interfaz={{ vista: t.interfaz.vista, dia: t.interfaz.dia, menos: t.controles.un_dia_menos, mas: t.controles.un_dia_mas, noCarga: t.estados.grafico_no_carga }}
+      />
+      <TechLabel texto={s.grafico.pie} />
+    </Card>
+
+    <div class="flex flex-col gap-5" data-casos>
+      <div class="flex items-end justify-between gap-4">
+        <h3 class="font-display text-sub font-semibold">{s.casos.titulo}</h3>
+        <div class="flex gap-2 md:hidden" data-casos-botones hidden>
+          <button type="button" class="border-linea rounded-control min-h-toque min-w-toque flex items-center justify-center border" data-casos-paso="-1">
+            <Icon nombre="anterior" /><span class="sr-only">{t.controles.caso_anterior}</span>
+          </button>
+          <button type="button" class="border-linea rounded-control min-h-toque min-w-toque flex items-center justify-center border" data-casos-paso="1">
+            <Icon nombre="siguiente" /><span class="sr-only">{t.controles.caso_siguiente}</span>
+          </button>
+        </div>
+      </div>
+      <ul class="sin-barra -mr-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-5 md:mr-0 md:grid md:grid-cols-2 md:overflow-visible md:pr-0" data-casos-lista tabindex="0">
+        {
+          s.casos.lista.map((caso) => (
+            <Card as="li" class="flex w-4/5 shrink-0 snap-start flex-col gap-3 md:w-auto">
+              <h4 class="rotulo text-tinta">{caso.nombre}</h4>
+              <dl class="text-cuerpo flex flex-col gap-2">
+                <div>
+                  <dt class="text-nota text-texto-2">{s.casos.etiquetas.causa_senalada}</dt>
+                  <dd class="text-cobre-texto font-medium">{caso.causa_senalada}</dd>
+                </div>
+                <div>
+                  <dt class="text-nota text-texto-2">{s.casos.etiquetas.causa_descartada}</dt>
+                  <dd class="text-texto-2 line-through decoration-1">{caso.causa_descartada}</dd>
+                </div>
+                <div>
+                  <dt class="text-nota text-texto-2">{s.casos.etiquetas.recomendacion}</dt>
+                  <dd>{caso.recomendacion}</dd>
+                </div>
+              </dl>
+            </Card>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Casos deslizables en celular: encaje nativo, con botones equivalentes al gesto.
+  for (const grupo of document.querySelectorAll<HTMLElement>('[data-casos]')) {
+    const lista = grupo.querySelector<HTMLElement>('[data-casos-lista]');
+    const botones = grupo.querySelector<HTMLElement>('[data-casos-botones]');
+    if (!lista || !botones) continue;
+    botones.hidden = false;
+    for (const b of botones.querySelectorAll<HTMLButtonElement>('[data-casos-paso]')) {
+      b.addEventListener('click', () => {
+        const ancho = lista.firstElementChild?.getBoundingClientRect().width ?? lista.clientWidth;
+        lista.scrollBy({ left: Number(b.dataset.casosPaso) * (ancho + 16), behavior: 'smooth' });
+      });
+    }
+  }
+</script>

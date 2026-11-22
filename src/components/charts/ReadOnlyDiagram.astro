@@ -1,0 +1,59 @@
+---
+// Lectura en un solo sentido: control → historiador → Agento → persona. Nunca hay una flecha de vuelta.
+// Con el slot «planta», el dibujo de la planta va encima y se une al control con una línea neutra:
+// el control opera la planta; Agento no toca ninguno de los dos.
+interface Props {
+  nodos: { control: string; historiador: string; agento: string; persona: string };
+  flecha: string;
+  alt: string;
+  pie?: string;
+  class?: string;
+}
+const { nodos, flecha, alt, pie, class: clase } = Astro.props;
+const lista = [nodos.control, nodos.historiador, nodos.agento, nodos.persona];
+const conPlanta = Astro.slots.has('planta');
+// Misma grilla para la cadena y para la línea que baja de la planta, así la línea cae al centro del control.
+const grilla = 'md:grilla-lectura';
+---
+
+<figure class:list={['flex flex-col gap-3', clase]} role="img" aria-label={alt}>
+  {
+    conPlanta && (
+      <div aria-hidden="true">
+        <slot name="planta" />
+        <div class={grilla}>
+          <div class="flex h-8 justify-center">
+            <svg viewBox="0 0 12 32" class="h-8 w-3" fill="none" preserveAspectRatio="none">
+              <path d="M6,0 V32" class="stroke-linea" stroke-width="1.25" vector-effect="non-scaling-stroke" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  <ol class:list={['flex flex-col', grilla]}>
+    {
+      lista.map((nodo, i) => (
+        <>
+          <li class:list={['rounded-control text-cuerpo flex min-h-toque items-center border px-4 py-3', i === 2 ? 'border-tinta bg-sup font-medium' : 'border-linea', i === 0 && 'text-texto-2 border-dashed']}>{nodo}</li>
+          {i < lista.length - 1 && (
+            <li aria-hidden="true" class="flex items-center justify-center max-md:h-8">
+              {/* Del control al historiador no pasa nada por Agento: la lectura empieza en el historiador. */}
+              <svg viewBox="0 0 48 12" class="h-3 w-12 overflow-visible max-md:rotate-90" fill="none">
+                {i === 0 ? (
+                  <path d="M0,6 H48" class="stroke-linea" stroke-width="1.25" vector-effect="non-scaling-stroke" />
+                ) : (
+                  <path d="M0,6 H44 M38,1 L44,6 L38,11" class="stroke-patina flujo-lectura" stroke-width="1.25" stroke-dasharray="4 4" vector-effect="non-scaling-stroke" />
+                )}
+              </svg>
+            </li>
+          )}
+        </>
+      ))
+    }
+  </ol>
+  <figcaption class="flex flex-col gap-1">
+    <span class="rotulo text-patina-texto">{flecha}</span>
+    {pie && <span class="rotulo text-texto-2">{pie}</span>}
+  </figcaption>
+</figure>

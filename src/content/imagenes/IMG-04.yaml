@@ -1,0 +1,23 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-04"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-04-escritorio.webp"
+  ancho: 2048
+  alto: 1152
+  foco: [64, 65.5]
+  capa:
+    archivo: "IMG-04-escritorio.svg"
+    estado: "brecha"
+    rotulo: [42, 84]
+celular:
+  archivo: "IMG-04-celular.webp"
+  ancho: 1632
+  alto: 2040
+  foco: [50, 55.2]
+  capa:
+    archivo: "IMG-04-celular.svg"
+    estado: "brecha"
+    rotulo: [6, 70]

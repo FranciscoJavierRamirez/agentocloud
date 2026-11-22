@@ -1,0 +1,75 @@
+---
+// Primer paso: agendar 30 minutos (o pedir una Radiografía de Bombeo, si el contenido trae esa opción).
+// Es el cierre de la página: va después de las preguntas. WhatsApp queda como alternativa directa.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Card from '@/components/ui/Card.astro';
+import Button from '@/components/ui/Button.astro';
+import Photo from '@/components/media/Photo.astro';
+import ContactForm from '@/components/islands/ContactForm';
+import BookingFacade from '@/components/islands/BookingFacade';
+import { comunes, ruta, seccion } from '@/lib/i18n';
+import { enlaceWhatsapp } from '@/lib/contacto';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const [t, s, pie] = await Promise.all([comunes(lang), seccion(lang, 'primer-paso'), seccion(lang, 'pie')]);
+const agenda = (import.meta.env.PUBLIC_AGENDA_URL as string | undefined) ?? '';
+const turnstile = (import.meta.env.PUBLIC_TURNSTILE_SITEKEY as string | undefined) ?? '';
+const privacidad = ruta(lang, pie.enlaces_legales[0]?.ruta ?? '');
+const unaSola = s.opciones.length === 1;
+---
+
+<section id={s.ancla} class="py-seccion relative isolate overflow-hidden" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <Photo codigo={s.imagen.codigo} alt={s.imagen.alt} textura class="pointer-events-none absolute inset-0 -z-20 size-full object-cover" />
+  <div class="velo-suave absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="contenedor flex flex-col gap-10">
+    <SectionHeading titulo={s.titulo} id={`titulo-${s.id}`} />
+    <div class:list={['grid items-start gap-6', !unaSola && 'lg:grid-cols-2']}>
+      {
+        s.opciones.map((opcion) => (
+          <Card as="article" class:list={['flex flex-col gap-6 md:p-8', unaSola && 'lg:flex-row lg:items-center lg:justify-between lg:gap-12']} id={`opcion-${opcion.id}`}>
+            <div class="flex flex-col gap-3">
+              <h3 class="font-display text-seccion">{opcion.titulo}</h3>
+              <p class="text-bajada text-texto-2">{opcion.texto}</p>
+            </div>
+            {opcion.destino === 'agenda' ? (
+              <div class="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col">
+                <BookingFacade
+                  client:visible
+                  texto={opcion.boton}
+                  url={agenda}
+                  correo={t.organizacion.correo}
+                  sinHoras={t.formulario.errores.agenda_sin_horas}
+                  cerrar={t.controles.cerrar}
+                  aviso={t.interfaz.abre_en_otra_pestana}
+                />
+                <Button
+                  href={enlaceWhatsapp(t.whatsapp.numero, t.whatsapp.mensaje)}
+                  variant="secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-evento="whatsapp"
+                  data-origen="primer-paso"
+                >
+                  {t.whatsapp.boton}
+                  <span class="sr-only"> {t.interfaz.abre_en_otra_pestana}</span>
+                </Button>
+              </div>
+            ) : (
+              <ContactForm
+                client:visible
+                accion="/api/contacto/"
+                titulo={s.formulario.titulo}
+                boton={s.formulario.boton_enviar}
+                textos={t.formulario}
+                privacidadUrl={privacidad}
+                sinScript={t.interfaz.sin_script_formulario}
+                turnstile={turnstile}
+                lang={lang}
+              />
+            )}
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>

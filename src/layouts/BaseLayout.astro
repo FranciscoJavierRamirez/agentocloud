@@ -1,0 +1,74 @@
+---
+// <html lang>, <head>, salto al contenido, encabezado, pie y carril de balance.
+import '@/styles/global.css';
+import SeoHead from '@/components/head/SeoHead.astro';
+import HreflangLinks from '@/components/head/HreflangLinks.astro';
+import SchemaOrg from '@/components/head/SchemaOrg.astro';
+import FontsHead from '@/components/head/FontsHead.astro';
+import Analytics from '@/components/head/Analytics.astro';
+import SkipLink from '@/components/head/SkipLink.astro';
+import Header from '@/components/nav/Header.astro';
+import Footer from '@/components/nav/Footer.astro';
+import BalanceRail from '@/components/nav/BalanceRail.astro';
+import StickyAction from '@/components/nav/StickyAction.astro';
+import WhatsAppButton from '@/components/nav/WhatsAppButton.astro';
+import { comunes, idiomaPorDefecto, idiomasActivos } from '@/lib/i18n';
+
+interface Props {
+  lang: string;
+  titulo?: string;
+  descripcion?: string;
+  /** Nombre de la imagen para compartir en /og/<nombre>.png */
+  og?: string;
+  /** Ruta de la página por idioma, sin prefijo: { es: "empresa" }. Vacío = inicio. */
+  rutas?: Record<string, string>;
+  indexar?: boolean;
+  preguntas?: { pregunta: string; respuesta: string }[];
+  /** Cantidad de secciones numeradas: muestra el carril de balance (solo el inicio). */
+  carril?: number;
+  barraFija?: boolean;
+  pie?: boolean;
+}
+
+const { lang, titulo, descripcion, og = 'inicio', rutas = { [lang]: '' }, indexar = true, preguntas, carril, barraFija = false, pie = true } = Astro.props;
+const t = await comunes(lang);
+// Código completo de cada idioma activo (es-CL, en) para los enlaces hreflang.
+const langs = Object.fromEntries(await Promise.all(idiomasActivos.map(async (l) => [l, (await comunes(l)).lang])));
+const og_prefijo = lang === idiomaPorDefecto ? '' : `${lang}/`;
+---
+
+<!doctype html>
+<html lang={t.lang} dir={t.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#F3F1EB" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <FontsHead />
+    <SeoHead
+      titulo={titulo ?? t.seo.titulo}
+      descripcion={descripcion ?? t.seo.descripcion}
+      imagen={`/og/${og_prefijo}${og}.png`}
+      imagenAlt={t.seo.imagen_compartir_alt}
+      nombreSitio={t.organizacion.nombre}
+      lang={t.lang}
+      indexar={indexar}
+      palabrasClave={indexar ? t.seo.palabras_clave : undefined}
+    />
+    <HreflangLinks rutas={rutas} langs={langs} />
+    <SchemaOrg organizacion={t.organizacion} logo="/favicon.svg" preguntas={preguntas} lang={t.lang} />
+    <Analytics />
+  </head>
+  <body class="bg-fondo text-tinta font-sans">
+    <SkipLink texto={t.navegacion.saltar_al_contenido} />
+    <Header lang={lang} rutas={rutas} />
+    {carril && <BalanceRail total={carril} />}
+    <main id="contenido" tabindex="-1" class="outline-none"><slot /></main>
+    {pie && <Footer lang={lang} />}
+    {barraFija && <StickyAction lang={lang} />}
+    <WhatsAppButton lang={lang} />
+    <script>
+      import '@/motion/index';
+    </script>
+  </body>
+</html>

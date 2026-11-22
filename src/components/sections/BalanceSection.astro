@@ -1,0 +1,32 @@
+---
+// 3 · El balance (momento principal). Título, texto y la foto del estanque con la brecha marcada por el gemelo.
+import SectionLead from '@/components/ui/SectionLead.astro';
+import Prose from '@/components/ui/Prose.astro';
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import ReliefTexture from '@/components/media/ReliefTexture.astro';
+import { entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'balance');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'balance' }>;
+const { Content } = await render(entrada);
+const fuga = s.estanque.escenarios.find((e) => e.rotulo_capa);
+---
+
+<section id={s.ancla} class="py-seccion relative isolate" data-seccion={s.orden} data-brecha aria-labelledby={`titulo-${s.id}`}>
+  <ReliefTexture />
+  <div class="contenedor flex flex-col gap-10">
+    <SectionLead titulo={s.titulo} id={`titulo-${s.id}`}><Prose><Content /></Prose></SectionLead>
+    <TwinFigure
+      lang={lang}
+      codigo={s.imagen.codigo}
+      alt={s.imagen.alt}
+      rotulo={fuga?.rotulo_capa}
+      estado="brecha"
+      nombre="balance"
+      sizes="100vw"
+      class="rounded-tarjeta w-full"
+    />
+  </div>
+</section>

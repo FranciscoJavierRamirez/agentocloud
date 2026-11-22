@@ -1,0 +1,7 @@
+---
+// Placa o velo de sal bajo un texto que va sobre foto: sobre fotografía no hay contraste garantizado.
+interface Props { class?: string; suave?: boolean }
+const { class: clase, suave = false } = Astro.props;
+---
+
+<div class:list={[suave ? 'velo-suave' : 'velo', 'rounded-tarjeta p-5 md:p-8', clase]}><slot /></div>

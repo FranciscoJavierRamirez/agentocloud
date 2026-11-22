@@ -1,0 +1,35 @@
+---
+// 11 · Quiénes somos. Variante corta (inicio: retrato, cargo y una línea de bio) y ampliada (Empresa: trayectoria completa).
+// Retratos reales, con el mismo encuadre. Sin animación.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import ArrowLink from '@/components/ui/ArrowLink.astro';
+import Portrait from '@/components/media/Portrait.astro';
+import { comunes, paginaPorTipo, ruta, seccion } from '@/lib/i18n';
+interface Props { lang: string; variante?: 'corta' | 'ampliada'; titulo?: string }
+const { lang, variante = 'corta', titulo } = Astro.props;
+const [t, s] = await Promise.all([comunes(lang), seccion(lang, 'quienes-somos')]);
+const empresa = variante === 'corta' ? await paginaPorTipo(lang, 'empresa') : undefined;
+const ampliada = variante === 'ampliada';
+---
+
+<section id={s.ancla} class="py-seccion" data-seccion={ampliada ? undefined : s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <div class="contenedor flex flex-col gap-10">
+    <SectionHeading titulo={titulo ?? s.titulo} id={`titulo-${s.id}`} />
+    <ul class="grid gap-10 md:grid-cols-2">
+      {
+        s.personas.map((persona) => (
+          <li class:list={['grid gap-5', ampliada ? 'lg:grid-cols-5' : 'grid-cols-3 items-start']}>
+            <div class:list={[ampliada ? 'max-w-60 lg:col-span-2' : 'col-span-1']}><Portrait codigo={persona.retrato} alt={persona.foto_alt} /></div>
+            <div class:list={['flex flex-col gap-2', ampliada ? 'lg:col-span-3' : 'col-span-2']}>
+              <h3 class="font-display text-sub font-semibold">{persona.nombre}</h3>
+              <p class="rotulo text-texto-2">{persona.cargo}</p>
+              <p class="text-cuerpo text-texto-2">{ampliada ? persona.bio : persona.bio_corta}</p>
+              {persona.linkedin && <ArrowLink href={persona.linkedin} externo avisoExterno={t.interfaz.abre_en_otra_pestana}>{persona.linkedin_texto}</ArrowLink>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    {empresa && <ArrowLink href={ruta(lang, empresa.data.ruta)} class="self-start">{t.interfaz.ver_empresa}</ArrowLink>}
+  </div>
+</section>

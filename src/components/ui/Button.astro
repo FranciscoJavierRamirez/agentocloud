@@ -1,0 +1,31 @@
+---
+// Principal (tinta) y secundario (borde). El cobre nunca es color de botón.
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const boton = tv({
+  base: 'group min-h-toque rounded-control text-cuerpo ease-agento inline-flex items-center justify-center gap-2 px-5 font-sans font-medium no-underline transition duration-(--dur-0) active:scale-97',
+  variants: {
+    variant: {
+      primary: 'bg-tinta text-sobre',
+      secondary: 'border-linea text-tinta hover:bg-sup-2 border bg-transparent',
+    },
+    ancho: { auto: '', completo: 'w-full' },
+  },
+  defaultVariants: { variant: 'primary', ancho: 'auto' },
+});
+
+interface Props extends VariantProps<typeof boton> {
+  href?: string;
+  flecha?: boolean;
+  class?: string;
+  [atributo: string]: unknown;
+}
+const { variant, ancho, href, flecha = false, class: clase, ...resto } = Astro.props;
+const Etiqueta = href ? 'a' : 'button';
+---
+
+<Etiqueta href={href} class={boton({ variant, ancho, class: clase })} {...resto}>
+  <slot />
+  {flecha && <Icon nombre="flecha" tamano="s" class="ease-agento transition duration-(--dur-1) group-hover:translate-x-0.5" />}
+</Etiqueta>

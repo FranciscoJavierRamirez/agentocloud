@@ -1,0 +1,15 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-08"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-08-escritorio.webp"
+  ancho: 1632
+  alto: 2040
+  foco: [50, 55]
+  aviso: "arriba-izquierda"
+  capa:
+    archivo: "IMG-08-escritorio.svg"
+    estado: "brecha"
+    rotulo: [8, 76]

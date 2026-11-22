@@ -1,0 +1,329 @@
+/* Único punto de entrada de estilos. El tema del cliente ya importa Tailwind y los tokens. */
+@import "./agento.theme.css";
+@source not "../../doc";
+
+/* Entrada actual de la navegación (aria-current), en el propio enlace o en uno de sus hijos. */
+@custom-variant actual (&[aria-current]);
+@custom-variant en-actual (:where([aria-current]) &);
+
+/* Las familias las aloja el sitio (API de fuentes de Astro); los tokens conservan sus respaldos. */
+:root {
+  --display: var(--fuente-display), "Helvetica Neue", Arial, sans-serif;
+  --texto: var(--fuente-texto), system-ui, sans-serif;
+  --mono: var(--fuente-mono), ui-monospace, Menlo, monospace;
+  --alto-nav: 4rem;
+  --alto-barra-fija: 4.75rem; /* barra fija de celular: botón de 48 px + 12 px arriba y abajo + borde */
+  /* WhatsApp: su logo oficial, solo en su botón: el símbolo en blanco sobre el verde de la marca (guía de marca de WhatsApp). */
+  --whatsapp: #25D366;
+  --whatsapp-simbolo: #FFFFFF;
+  --z-whatsapp: 120; /* sobre la barra fija, bajo la hoja del menú */
+}
+
+@theme inline {
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-simbolo: var(--whatsapp-simbolo);
+}
+
+/* Respaldo del resorte para navegadores sin linear() (tokens: cubic-bezier de agento.tokens.json). */
+@supports not (transition-timing-function: linear(0, 1)) {
+  :root { --resorte: cubic-bezier(.3, 1.35, .5, 1); }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: var(--alto-nav); -webkit-text-size-adjust: 100%; }
+  body { min-height: 100dvh; overflow-x: clip; }
+  /* El tema oscuro pinta su propio fondo y texto (Seguridad, marco del prototipo). */
+  .tema-oscuro { background: var(--fondo); color: var(--tinta); }
+  ::selection { background: rgb(var(--sol-rgb) / 0.35); }
+  summary { cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  dialog { color: inherit; }
+}
+
+/* ── Composición ─────────────────────────────────────────────────────────── */
+
+/* Caja de página: margen de 20 px y 28 px a la izquierda, donde corre la línea de balance. */
+@utility contenedor {
+  width: 100%;
+  max-width: var(--container-pagina);
+  margin-inline: auto;
+  padding-inline: var(--spacing-margen-linea) var(--spacing-margen);
+  @media (min-width: 47.5rem) { padding-inline: 3.5rem 2.5rem; }
+}
+
+/* Esquema de lectura en un solo sentido: cuatro nodos iguales y tres flechas de 3 rem entre ellos. */
+@utility grilla-lectura {
+  display: grid;
+  grid-template-columns: 1fr 3rem 1fr 3rem 1fr 3rem 1fr;
+}
+
+/* Placa o velo de sal (o de tinta en el tema oscuro) bajo un texto que va sobre foto. */
+@utility velo {
+  background: color-mix(in srgb, var(--fondo) 85%, transparent);
+}
+@utility velo-suave {
+  background: color-mix(in srgb, var(--fondo) 80%, transparent);
+}
+
+/* Textura de apoyo que se desvanece hacia sus bordes superior e inferior. */
+@utility desvanecer-y {
+  mask-image: linear-gradient(to bottom, transparent, #000 7rem, #000 calc(100% - 7rem), transparent);
+}
+
+/* Velo lateral del hero (escritorio): la sal cubre el lado del texto y se abre hacia el gemelo. Sustituye a la placa. */
+@utility velo-lateral {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--fondo) 94%, transparent) 0%,
+    color-mix(in srgb, var(--fondo) 86%, transparent) 34%,
+    color-mix(in srgb, var(--fondo) 40%, transparent) 52%,
+    transparent 66%
+  );
+}
+
+/* Rayado: sensor que deriva (tinta) y extracción sobre el límite (cobre). Forma además de color. */
+@utility rayado {
+  background-image: repeating-linear-gradient(135deg, var(--tinta) 0 2px, transparent 2px 7px);
+}
+@utility rayado-cobre {
+  background-image: repeating-linear-gradient(135deg, var(--cobre) 0 2px, rgb(var(--cobre-rgb) / 0.18) 2px 7px);
+}
+
+/* Luz rasante sobre una foto: una sola dirección, α ≤ .35 (sol) y ≤ .18 (sombra). */
+@utility luz-rasante {
+  background:
+    linear-gradient(var(--sol-angulo), rgb(var(--sol-rgb) / 0.22), transparent 55%),
+    linear-gradient(var(--sol-angulo), transparent 55%, rgb(var(--sombra-rgb) / 0.12));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* ── La capa del gemelo (sistema_de_diseno/02 §5) ────────────────────────── */
+
+/* Un solo lienzo para la foto y la capa: lo que se recorta es el lienzo, nunca cada pieza por separado. */
+.figura-gemela {
+  position: relative;
+  overflow: hidden;
+  container-type: size;
+  --ratio: var(--ratio-c);
+  --fx: var(--fx-c);
+  --fy: var(--fy-c);
+  --cierre-dy: var(--cierre-dy-c, 0px);
+}
+.figura-gemela[data-ajuste="propio"] { aspect-ratio: var(--ratio); }
+.figura-gemela .lienzo {
+  --lw: max(100cqw, calc(100cqh * var(--ratio)));
+  --lh: calc(var(--lw) / var(--ratio));
+  position: absolute;
+  width: var(--lw);
+  height: var(--lh);
+  left: calc((100cqw - var(--lw)) * var(--fx));
+  top: calc((100cqh - var(--lh)) * var(--fy));
+}
+@media (min-width: 47.5rem) {
+  .figura-gemela { --ratio: var(--ratio-e); --fx: var(--fx-e); --fy: var(--fy-e); --cierre-dy: var(--cierre-dy-e, 0px); }
+}
+.figura-gemela img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.figura-gemela .capa { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--z-capa-gemelo); overflow: visible; }
+/* El rótulo nunca pasa del borde visible de la figura (el lienzo puede ser más ancho que ella cuando se recorta). */
+.figura-gemela .rotulo-capa { position: absolute; z-index: var(--z-rotulo); max-width: min(92%, 36rem, 100cqw - 2.5rem); }
+
+.anillo {
+  fill: none;
+  stroke: var(--cobre);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+[data-capa="brecha"] { transform-box: fill-box; transform-origin: center; }
+/* El logo usa los colores del tema: tinta, anillo gemelo en cobre y «cloud» en pátina oscura. */
+.lg-tinta { stroke: var(--tinta); }
+.lg-gemelo { stroke: var(--cobre); }
+.lg-cloud { stroke: var(--patina-texto); }
+[data-capa] { transition: opacity var(--dur-2) var(--ease), translate var(--dur-3) var(--resorte); }
+/* Balance que cierra: lo medido calza con lo esperado y no hay cobre ni anillo. */
+[data-estado="cierra"] [data-capa="brecha"],
+[data-estado="cierra"] [data-capa="anillo"] { opacity: 0; }
+[data-estado="cierra"] [data-capa="medido"] { translate: 0 var(--cierre-dy, 0px); }
+[data-estado="cierra"] [data-solo="brecha"],
+[data-estado="brecha"] [data-solo="cierra"] { display: none; }
+/* Sensor que deriva: la línea de nivel tiembla una vez y vuelve (3 px, 400 ms). */
+@keyframes temblar {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-3px); }
+  75% { transform: translateY(3px); }
+}
+[data-temblor="1"] [data-capa="medido"] { animation: temblar 400ms var(--ease) 1; }
+
+/* ── Movimiento sin librería (nivel celular). El contenido nunca parte invisible sin script. ── */
+
+/* Carril de balance: avanza con el scroll, fuera del hilo principal. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .carril-avance { transform-origin: top; animation: avanzar linear both; animation-timeline: scroll(root); }
+    @keyframes avanzar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+    /* La luz avanza: el sol pasa de 205° a 265° al bajar. */
+    @property --sol-angulo { syntax: "<angle>"; inherits: true; initial-value: 225deg; }
+    html.mov { animation: dia linear both; animation-timeline: scroll(root); }
+    @keyframes dia { from { --sol-angulo: 205deg; } to { --sol-angulo: 265deg; } }
+
+    /* Las capas chicas y las cotas se trazan al entrar en pantalla. */
+    html.mov .trazo-al-entrar {
+      stroke-dasharray: 1;
+      animation: trazar linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    /* Líneas rectas en HTML (cotas y pasos): crecen de izquierda a derecha. */
+    html.mov .trazo-x {
+      transform-origin: left center;
+      animation: trazar-x linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    @keyframes trazar-x { from { scale: 0 1; } to { scale: 1 1; } }
+  }
+}
+
+/* Un solo sentido: los guiones fluyen del historiador hacia la persona durante 4 s y se detienen. */
+@media (prefers-reduced-motion: no-preference) {
+  .flujo-lectura { animation: fluir 4s linear 1 both; }
+  @keyframes fluir { from { stroke-dashoffset: 64; } to { stroke-dashoffset: 0; } }
+}
+
+/* Acordeón: el contenido baja en 240 ms y el signo + gira a ×. */
+details .signo { transition: rotate 240ms var(--ease); }
+details[open] .signo { rotate: 45deg; }
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    details { interpolate-size: allow-keywords; }
+    details::details-content { block-size: 0; overflow: clip; transition: block-size 240ms var(--ease), content-visibility 240ms allow-discrete; }
+    details[open]::details-content { block-size: auto; }
+  }
+}
+
+/* Hoja inferior y menú (<dialog>): sube 420 ms; el fondo se vela. */
+dialog.hoja {
+  margin: auto 0 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 88dvh;
+  border: 0;
+  padding: 0;
+  background: var(--sup);
+  border-radius: var(--r) var(--r) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  transition: translate var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease), display var(--dur-2) allow-discrete, overlay var(--dur-2) allow-discrete;
+  translate: 0 100%;
+  opacity: 0;
+}
+dialog.hoja[open] { translate: 0 0; opacity: 1; }
+@starting-style { dialog.hoja[open] { translate: 0 100%; opacity: 0; } }
+dialog.hoja::backdrop { background: rgb(var(--sombra-rgb) / 0.45); }
+
+/* Botón de envío: un trazo lo subraya al confirmar. */
+[data-estado-envio] .trazo-envio { transform: scaleX(0); transform-origin: left; transition: transform var(--dur-3) var(--ease); }
+[data-estado-envio="enviando"] .trazo-envio { transform: scaleX(0.6); }
+[data-estado-envio="recibido"] .trazo-envio { transform: scaleX(1); }
+
+[data-barra-fija] { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+
+/* Botón flotante de WhatsApp: sombra de relieve (α ≤ .18). En celular se retira cuando aparece la barra fija (que trae WhatsApp). */
+@utility sombra-flotante {
+  box-shadow: 0 6px 20px rgb(var(--sombra-rgb) / 0.18), 0 1px 3px rgb(var(--sombra-rgb) / 0.18);
+}
+[data-whatsapp] { margin-bottom: env(safe-area-inset-bottom); }
+@media (max-width: 47.49rem) {
+  [data-whatsapp] { transition: opacity var(--dur-1) var(--ease), scale var(--dur-1) var(--ease), visibility var(--dur-1); }
+  body:has([data-barra-fija][data-visible]) [data-whatsapp] { opacity: 0; scale: 0.8; visibility: hidden; }
+}
+
+/* Gráfico alarma/gemelo: lienzo flexible y columna de lecturas de 17 rem; lecturas en tres columnas en celular. */
+@utility grilla-grafico {
+  @media (min-width: 64rem) { grid-template-columns: minmax(0, 1fr) 17rem; }
+}
+@utility grilla-lecturas {
+  grid-template-columns: auto 1fr 1fr;
+  @media (min-width: 64rem) { grid-template-columns: 1fr; }
+}
+
+/* Alto del hero: deja asomar la franja siguiente (≈ 88 % en escritorio), con unidades dinámicas. */
+@utility alto-hero {
+  min-height: calc(100dvh - var(--alto-nav));
+  @media (min-width: 47.5rem) { min-height: min(88dvh, 60rem); }
+}
+
+/* Hero en tableta: la foto va arriba, en bloque, y el texto debajo. */
+@utility alto-foto-hero {
+  height: 46dvh;
+}
+
+/* Casos deslizables: encaje nativo, sin barra visible. */
+@utility sin-barra {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* Deslizadores nativos con la forma de la marca. */
+input[type="range"].perilla {
+  appearance: none;
+  width: 100%;
+  height: var(--toque);
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"].perilla::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--sup-2); }
+input[type="range"].perilla::-moz-range-track { height: 4px; border-radius: 2px; background: var(--sup-2); }
+input[type="range"].perilla::-webkit-slider-thumb {
+  appearance: none;
+  width: 28px; height: 28px; margin-top: -12px;
+  border-radius: 50%; background: var(--tinta); border: 3px solid var(--sup);
+}
+input[type="range"].perilla::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%; background: var(--tinta); border: 3px solid var(--sup);
+}
+
+/* ── Coreografía del hero: "Amanece y aparece el gemelo" (05_Sitio_Web §3b, 2,4 s, una vez) ──
+   Va en CSS: no espera a ninguna librería, la foto nunca parte invisible y, sin movimiento, todo está en su estado final.
+   El botón "Repetir" quita y repone .en-escena. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes amanecer { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes anillo { from { opacity: 0; scale: 0.2; } to { opacity: 1; scale: 1; } }
+
+  /* 0 a 1.200 ms: la foto pasa de fría y levemente sobreexpuesta a su color final. Es una capa encima. */
+  .en-escena [data-amanecer] { background: linear-gradient(225deg, rgb(238 242 238 / 0.5), rgb(238 242 238 / 0.25)); animation: amanecer 1200ms var(--ease) both; }
+  /* 300 ms rótulo y titular; 700 ms bajada y botones (suben 20 px). */
+  .en-escena [data-mov="subir"] { animation: subir var(--dur-2) var(--ease) both; animation-delay: 300ms; }
+  .en-escena [data-mov="subir"]:nth-child(2) { animation-delay: 410ms; }
+  .en-escena [data-mov="subir"]:nth-child(3) { animation-delay: 700ms; }
+  .en-escena [data-mov="subir"]:nth-child(4) { animation-delay: 810ms; }
+  /* 900 a 1.800 ms: el gemelo se dibuja; lo medido llega 60 ms después. */
+  .en-escena [data-mov="aparecer"] { animation: aparecer var(--dur-3) var(--ease) both; animation-delay: 900ms; }
+  .en-escena [data-mov="trazo"] { stroke-dasharray: 1; animation: trazar var(--dur-3) var(--ease) both; animation-delay: 960ms; }
+  /* 1.800 a 2.400 ms: la brecha se abre con rebote leve, aparece el anillo y, al final, el rótulo por partes. */
+  .en-escena [data-mov="abrir"] { animation: abrir 600ms var(--resorte) both; animation-delay: 1800ms; }
+  .en-escena [data-mov="anillo"] { animation: anillo 600ms var(--resorte) both; animation-delay: 2000ms; }
+  .en-escena [data-rotulo-capa] { animation: aparecer var(--dur-1) var(--ease) both; animation-delay: 2200ms; }
+  .en-escena [data-rotulo-capa] > * { animation: aparecer var(--dur-2) var(--ease) both; animation-delay: 2200ms; }
+  .en-escena [data-rotulo-capa] > :nth-child(n + 2) { animation-delay: 2320ms; }
+  .en-escena [data-rotulo-capa] > :nth-child(n + 4) { animation-delay: 2440ms; }
+  .en-escena [data-rotulo-capa] > :nth-child(n + 6) { animation-delay: 2560ms; }
+
+  /* Logo en movimiento (15 §3): se traza «agento», aparece el anillo gemelo y se separa con rebote, aparece «cloud». */
+  @keyframes gemelo { from { opacity: 0; translate: -14px 6px; } to { opacity: 1; translate: 0 0; } }
+  .se-traza .lg-tinta { stroke-dasharray: 1; animation: trazar 520ms var(--ease) both; animation-delay: calc(var(--i) * 65ms); }
+  .se-traza .lg-gemelo { animation: gemelo 620ms var(--resorte) both; animation-delay: 900ms; }
+  .se-traza .lg-cloud { animation: aparecer 360ms var(--ease) both; animation-delay: 1540ms; }
+}
+
+/* Desfase y reencuentro (nivel escritorio): el módulo de movimientos escribe --desfase; al detenerse vuelve a calzar. */
+.figura-gemela .capa, .figura-gemela .rotulo-capa { translate: 0 var(--desfase, 0px); }
+
+/* Marco de la agenda dentro de la hoja. */
+@utility alto-agenda {
+  height: 70dvh;
+}

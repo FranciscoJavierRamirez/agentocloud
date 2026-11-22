@@ -1,0 +1,16 @@
+---
+// Analítica sin cookies. Sin proveedor configurado no carga ningún script de terceros.
+// Para conectar uno: definir PUBLIC_ANALITICA_SRC (y PUBLIC_ANALITICA_DOMINIO) y sumar su origen a la CSP en astro.config.mjs.
+// Los eventos de exploración salen de src/lib/analitica.ts; aquí se registran los botones con data-evento.
+const src = import.meta.env.PUBLIC_ANALITICA_SRC as string | undefined;
+const dominio = import.meta.env.PUBLIC_ANALITICA_DOMINIO as string | undefined;
+---
+
+{src && <script is:inline defer src={src} data-domain={dominio} />}
+<script>
+  import { registrar, type Evento } from '@/lib/analitica';
+  document.addEventListener('click', (e) => {
+    const el = (e.target as Element | null)?.closest<HTMLElement>('[data-evento]');
+    if (el) registrar(el.dataset.evento as Evento, { origen: el.dataset.origen ?? '' });
+  });
+</script>

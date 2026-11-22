@@ -1,0 +1,31 @@
+---
+// Barra fija de acción en celular: agendar (tinta) y, al lado, WhatsApp. Reemplaza al botón flotante, que tapaba contenido. Aparece al pasar el hero y se esconde
+// si el formulario está en pantalla. Va como experimento, con medición (05_Sitio_Web §4).
+import Button from '@/components/ui/Button.astro';
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { comunes, destino } from '@/lib/i18n';
+import { enlaceWhatsapp } from '@/lib/contacto';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = await comunes(lang);
+---
+
+<div
+  class="velo border-linea ease-agento invisible fixed inset-x-0 bottom-0 z-(--z-barra-fija) translate-y-full flex gap-2 border-t p-3 transition duration-(--dur-2) data-visible:visible data-visible:translate-y-0 md:hidden"
+  data-barra-fija
+  data-oculta-en={t.barra_fija.ancla}
+>
+  <Button href={destino(lang, t.barra_fija)} ancho="completo" data-evento="agendar" data-origen="barra-fija">{t.barra_fija.texto}</Button>
+  <a
+    href={enlaceWhatsapp(t.whatsapp.numero, t.whatsapp.mensaje)}
+    target="_blank"
+    rel="noopener noreferrer"
+    title={t.whatsapp.etiqueta}
+    class="bg-whatsapp text-whatsapp-simbolo rounded-control size-toque flex shrink-0 items-center justify-center no-underline"
+    data-evento="whatsapp"
+    data-origen="barra-fija"
+  >
+    <WhatsAppIcon class="size-6" />
+    <span class="sr-only">{t.whatsapp.etiqueta} {t.interfaz.abre_en_otra_pestana}</span>
+  </a>
+</div>

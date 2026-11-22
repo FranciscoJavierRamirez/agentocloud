@@ -1,0 +1,70 @@
+/* Agento Cloud · tokens v4 · concepto "Balance" · 19-nov-2026
+   Fuente: agento.tokens.json (DTCG 2025.10).
+   El tema CLARO es el principal (sitio, LinkedIn, documentos): blanco de sal y tinta mineral.
+   El tema OSCURO es para las pantallas del producto y la sala de control.
+   Pátina = el modelo, lo que debería pasar. Cobre = la brecha, lo que no cierra. */
+
+:root {
+  /* Superficies: la sal */
+  --fondo: #F3F1EB;          /* blanco de sal, levemente cálido */
+  --sup: #FBFAF7;            /* tarjetas y láminas */
+  --sup-2: #E8E5DC;          /* superficie hundida, pistas de controles */
+  --tinta: #0F1A18;          /* tinta mineral: texto y trazos · 15,7:1 */
+  --texto-2: #4D5C57;        /* texto secundario y etiquetas · 6,2:1 */
+  --linea: rgba(15, 26, 24, .14);
+
+  /* El modelo y la brecha */
+  --patina: #2E8F80;         /* el modelo en gráficos (no para texto) · 3,5:1 */
+  --patina-texto: #1E7366;   /* verde para texto, enlaces y «cloud» · 5,0:1 */
+  --cobre: #B9612B;          /* la brecha en gráficos, el anillo gemelo · 3,9:1 */
+  --cobre-texto: #9E4E1E;    /* cobre apto para texto · 5,2:1 */
+  --cobre-rgb: 185 97 43;    /* para rgb(var(--cobre-rgb) / α) */
+  --sobre: #FBFAF7;          /* texto sobre tinta o sobre cobre */
+
+  /* Estados (aparte del color de marca). Solo sobre --fondo o --sup */
+  --ok: #1F7A5A;
+  --vigilar: #8A5A00;
+  --alerta: #B3261E;
+
+  /* Relieve y luz natural (el sol rasante del desierto) */
+  --curva: rgba(15, 26, 24, .10);     /* curvas de nivel */
+  --curva-maestra: rgba(15, 26, 24, .20);
+  --sol-rgb: 242 176 104;    /* luz cálida y rasante, siempre con α ≤ .35 */
+  --sombra-rgb: 52 44 30;    /* sombra del relieve, siempre con α ≤ .18 */
+  --sol-angulo: 225deg;      /* hacia dónde viaja la luz: 225° = desde arriba a la derecha, sobre la cordillera. El scroll la mueve entre 205° y 265° */
+
+  /* Tipografía */
+  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --texto: "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Martian Mono", ui-monospace, Menlo, monospace;
+
+  /* Forma */
+  --r: 10px;
+  --r-ctrl: 8px;
+  --toque: 48px;             /* alto mínimo de un control táctil */
+
+  /* Movimiento */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --resorte: linear(0, .36 9%, .72 19%, .94 29%, 1.05 39%, 1.08 47%, 1.04 61%, 1 78%, 1);
+  --dur-0: 90ms;             /* presión */
+  --dur-1: 160ms;            /* respuesta: hover, foco */
+  --dur-2: 420ms;            /* cambio de estado */
+  --dur-3: 900ms;            /* trazar una curva, contar una cifra, cerrar un balance */
+  --dur-4: 1600ms;           /* la luz entra sobre el relieve al cargar. Solo una vez */
+
+  color-scheme: light;
+}
+
+/* Tema oscuro: pantallas del producto y sala de control. Diseñado, no invertido.
+   Se activa a propósito con data-theme="dark" (no sigue al sistema: el sitio es claro). */
+:root[data-theme="dark"], .tema-oscuro {
+  --fondo: #0A1110; --sup: #101917; --sup-2: #18231F;
+  --tinta: #EEF2EE; --texto-2: #9FB3AC; --linea: rgba(238, 242, 238, .14);
+  --patina: #3FA796; --patina-texto: #7CCDBD;
+  --cobre: #E08A52; --cobre-texto: #E08A52; --cobre-rgb: 224 138 82;
+  --sobre: #0A1110;
+  --ok: #5CC9A0; --vigilar: #E0B04A; --alerta: #FF8A7A;
+  --curva: rgba(238, 242, 238, .07); --curva-maestra: rgba(238, 242, 238, .14);
+  --sol-rgb: 224 138 82; --sombra-rgb: 0 0 0;
+  color-scheme: dark;
+}

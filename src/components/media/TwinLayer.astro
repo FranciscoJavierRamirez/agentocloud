@@ -1,0 +1,32 @@
+---
+// La capa del gemelo: lo esperado (pátina punteada), lo medido (tinta), la brecha (cobre) y su anillo.
+// Lee un SVG exportado con los nombres fijos #esperado, #medido, #brecha y #anillo (sistema_de_diseno/02 §5).
+// Decorativa: lo que dice la capa va en el texto alternativo de la foto.
+import { leerCapa } from '@/lib/imagenes';
+interface Props {
+  archivo: string;
+  /** css: se traza al entrar en pantalla · escena: la anima el módulo de movimientos · ninguna */
+  animacion?: 'css' | 'escena' | 'ninguna';
+  class?: string;
+}
+const { archivo, animacion = 'css', class: clase } = Astro.props;
+const capa = leerCapa(archivo);
+const escena = animacion === 'escena';
+---
+
+<svg class:list={['capa', clase]} viewBox={capa.viewBox} fill="none" aria-hidden="true" focusable="false">
+  {capa.esperado && <path data-capa="esperado" class="linea-esperada" d={capa.esperado} data-mov={escena ? 'aparecer' : undefined} />}
+  {
+    capa.medido && (
+      <path
+        data-capa="medido"
+        class:list={['linea-medida', animacion === 'css' && 'trazo-al-entrar']}
+        pathLength="1"
+        d={capa.medido}
+        data-mov={escena ? 'trazo' : undefined}
+      />
+    )
+  }
+  {capa.brecha && <path data-capa="brecha" class="brecha" d={capa.brecha} data-mov={escena ? 'abrir' : undefined} />}
+  {capa.anillo && <circle data-capa="anillo" class="anillo" cx={capa.anillo.cx} cy={capa.anillo.cy} r={capa.anillo.r} data-mov={escena ? 'anillo' : undefined} />}
+</svg>

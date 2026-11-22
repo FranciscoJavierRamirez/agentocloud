@@ -1,0 +1,15 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-10"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-10-escritorio.webp"
+  ancho: 2048
+  alto: 880
+  foco: [50, 50]
+celular:
+  archivo: "IMG-10-celular.webp"
+  ancho: 1152
+  alto: 2048
+  foco: [50, 50]

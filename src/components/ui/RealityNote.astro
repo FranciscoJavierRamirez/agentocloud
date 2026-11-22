@@ -1,0 +1,26 @@
+---
+// Declaración de realidad: nada simulado se presenta como resultado. Cambia sola según `origen`.
+import { comunes } from '@/lib/i18n';
+interface Props {
+  lang: string;
+  origen?: 'simulado' | 'medido' | 'publico' | 'calculado' | 'propio';
+  /** corta: rótulo · imagen: frase bajo una captura · etapa: párrafo de etapa */
+  tipo?: 'corta' | 'imagen' | 'etapa';
+  class?: string;
+}
+const { lang, origen = 'simulado', tipo = 'corta', class: clase } = Astro.props;
+const t = await comunes(lang);
+const simulado = origen === 'simulado';
+const texto = !simulado ? t.interfaz.origen[origen] : tipo === 'corta' ? t.declaracion_realidad.corta : t.declaracion_realidad[tipo];
+---
+
+{
+  tipo === 'corta' || !simulado ? (
+    <p class:list={['rotulo text-texto-2 flex items-center gap-2', clase]} data-realidad={origen}>
+      <span aria-hidden="true" class="border-texto-2 size-2 shrink-0 rounded-full border border-dashed" />
+      {texto}
+    </p>
+  ) : (
+    <p class:list={['text-nota text-texto-2 max-w-lectura', clase]} data-realidad={origen}>{texto}</p>
+  )
+}

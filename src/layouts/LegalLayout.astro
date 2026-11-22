@@ -1,0 +1,18 @@
+---
+// Privacidad y páginas legales: solo texto.
+import BaseLayout from './BaseLayout.astro';
+import Prose from '@/components/ui/Prose.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { comunes } from '@/lib/i18n';
+interface Props { lang: string; titulo: string; seo: { titulo: string; descripcion: string }; actualizado: string; og: string; rutas: Record<string, string>; borrador?: boolean }
+const { lang, titulo, seo, actualizado, og, rutas, borrador = false } = Astro.props;
+const t = await comunes(lang);
+const fecha = new Intl.DateTimeFormat(t.lang, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(actualizado));
+---
+
+<BaseLayout lang={lang} titulo={seo.titulo} descripcion={seo.descripcion} og={og} rutas={rutas} indexar={!borrador}>
+  <article class="contenedor py-seccion flex flex-col gap-8">
+    <SectionHeading titulo={titulo} nivel="h1" rotulo={fecha} />
+    <Prose><slot /></Prose>
+  </article>
+</BaseLayout>

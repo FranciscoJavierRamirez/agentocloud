@@ -1,0 +1,47 @@
+---
+// Perfil de la impulsión, de la costa a la faena, con cotas y la energía teórica por m³ en cada punto.
+// La cifra no es una animación: es la física (9,81 × altura ÷ 3.600).
+import { kwhPorM3 } from '@/lib/calculadora';
+import { numero } from '@/lib/formato';
+interface Props { puntos: string[]; nota: string; lang: string; unidad: string; class?: string }
+const { puntos, nota, lang, unidad, class: clase } = Astro.props;
+// La cota de cada punto sale de su rótulo ("ESTACIÓN 1 · 1.100 M").
+const cotas = puntos.map((p) => Number(p.match(/([\d.]+)\s*M$/i)?.[1].replace(/\./g, '') ?? 0));
+const maxima = Math.max(...cotas, 1);
+const variantes = [
+  { W: 340, H: 220, clase: 'md:hidden' },
+  { W: 640, H: 200, clase: 'max-md:hidden' },
+].map(({ W, H, clase }) => {
+  const mx = 28, base = H - 34, techo = 34;
+  const xs = cotas.map((_, i) => mx + (i * (W - mx * 2)) / (cotas.length - 1));
+  const ys = cotas.map((c) => base - (c / maxima) * (base - techo));
+  const trazo = xs.map((x, i) => `${i ? 'L' : 'M'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+  return { W, H, clase, mx, base, xs, ys, trazo };
+});
+---
+
+<figure class:list={['flex flex-col gap-2', clase]}>
+  {variantes.map(({ W, H, clase, mx, base, xs, ys, trazo }) => (
+  <svg viewBox={`0 0 ${W} ${H}`} class:list={['h-auto w-full', clase]} role="img" aria-label={`${nota}: ${puntos.join('; ')}`}>
+    <path d={`M${mx},${base} H${W - mx}`} class="stroke-tinta/20" stroke-width="1" vector-effect="non-scaling-stroke" />
+    <path d={trazo} class="linea-medida trazo-al-entrar" pathLength="1" />
+    {
+      xs.map((x, i) => (
+        <>
+          <path d={`M${x},${ys[i]} V${base}`} class="stroke-tinta/20" stroke-dasharray="2 3" vector-effect="non-scaling-stroke" />
+          <circle cx={x} cy={ys[i]} r="3.5" class="fill-fondo stroke-tinta" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+          <text x={x} y={base + 16} text-anchor={i === 0 ? 'start' : i === xs.length - 1 ? 'end' : 'middle'} class="fill-texto-2 font-mono text-nota tracking-wider">
+            {numero(lang, cotas[i])} M
+          </text>
+          {cotas[i] > 0 && (
+            <text x={x} y={ys[i] - 10} text-anchor={i === xs.length - 1 ? 'end' : 'middle'} class="fill-tinta font-mono text-nota tracking-wider">
+              {numero(lang, kwhPorM3(cotas[i]), 1)} {unidad}
+            </text>
+          )}
+        </>
+      ))
+    }
+  </svg>
+  ))}
+  <figcaption class="rotulo text-texto-2">{nota}</figcaption>
+</figure>

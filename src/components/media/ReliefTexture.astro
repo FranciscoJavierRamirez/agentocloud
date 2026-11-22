@@ -1,0 +1,9 @@
+---
+// Curvas de nivel sintéticas: textura de apoyo, solo en secciones sin foto. No se anima.
+// Se desvanece arriba y abajo: la textura nunca termina en un corte duro contra la sección vecina.
+import relieve from '@/assets/relieve-textura.svg?url';
+interface Props { class?: string }
+const { class: clase } = Astro.props;
+---
+
+<img src={relieve} alt="" width="1200" height="640" loading="lazy" decoding="async" aria-hidden="true" class:list={['desvanecer-y pointer-events-none absolute inset-0 -z-10 size-full object-cover opacity-60', clase]} />

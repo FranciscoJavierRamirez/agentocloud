@@ -1,0 +1,14 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-07"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-07-escritorio.webp"
+  ancho: 1632
+  alto: 2040
+  foco: [35, 45]
+  capa:
+    archivo: "IMG-07-escritorio.svg"
+    estado: "cierra"
+    rotulo: [66, 31]

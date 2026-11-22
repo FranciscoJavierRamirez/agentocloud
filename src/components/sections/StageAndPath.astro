@@ -1,0 +1,16 @@
+---
+// Etapa: lo que hay y lo que sigue, sin adornos. Lleva la declaración de realidad.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import RealityNote from '@/components/ui/RealityNote.astro';
+import StageTimeline from '@/components/charts/StageTimeline.astro';
+interface Props { lang: string; titulo: string; hay: { titulo: string; puntos: string[] }; sigue: { titulo: string; puntos: string[] } }
+const { lang, titulo, hay, sigue } = Astro.props;
+---
+
+<section class="py-seccion" aria-labelledby="titulo-etapa">
+  <div class="contenedor flex flex-col gap-10">
+    <SectionHeading titulo={titulo} id="titulo-etapa" />
+    <StageTimeline hay={hay} sigue={sigue} />
+    <RealityNote lang={lang} tipo="etapa" />
+  </div>
+</section>

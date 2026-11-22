@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 2040" fill="none">
+  <!-- Calzada 22-nov-2026: sigue la cañería desde la estación de la costa hacia el interior. -->
+  <path id="esperado" pathLength="1" d="M293.8,1734.0 L718.1,1632.0 L1142.4,1519.8 L1550.4,1356.6"/>
+  <path id="medido" pathLength="1" d="M293.8,1714.0 L718.1,1612.0 L1142.4,1499.8 L1550.4,1336.6"/>
+</svg>

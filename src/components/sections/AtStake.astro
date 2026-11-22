@@ -1,0 +1,25 @@
+---
+// 2 · Lo que está en juego: título y un párrafo, y junto a ellos tres cifras con su fuente (del registro).
+// Cierra con la panorámica de la impulsión y sus cotas: la foto no separa el texto de sus cifras.
+import SectionLead from '@/components/ui/SectionLead.astro';
+import SourcedStat from '@/components/ui/SourcedStat.astro';
+import Prose from '@/components/ui/Prose.astro';
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import { entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'en-juego');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'en-juego' }>;
+const { Content } = await render(entrada);
+---
+
+<section id={s.ancla} class="py-seccion" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <div class="contenedor flex flex-col gap-10">
+    <SectionLead titulo={s.titulo} id={`titulo-${s.id}`}><Prose><Content /></Prose></SectionLead>
+    <ul class="grid gap-8 md:grid-cols-3">
+      {s.cifras.map((c) => <li><SourcedStat lang={lang} cifra={c.cifra} texto={c.texto} /></li>)}
+    </ul>
+  </div>
+  <TwinFigure lang={lang} codigo={s.imagen.codigo} alt={s.imagen.alt} cotas={s.perfil.puntos} sizes="100vw" class="mt-12 w-full" nombre="impulsion" />
+</section>

@@ -1,0 +1,40 @@
+---
+// Cifra con su fuente, tomada del registro por identificador. Toda cifra pública pasa por aquí.
+import Stat from './Stat.astro';
+import { cifra as leerCifra, comunes } from '@/lib/i18n';
+import { conSigno } from '@/lib/formato';
+interface Props { lang: string; cifra: string; texto: string; tamano?: 'cifra' | 'seccion'; class?: string }
+const { lang, cifra, texto, tamano, class: clase } = Astro.props;
+const dato = await leerCifra(lang, cifra);
+const t = await comunes(lang);
+const valor = `${dato.prefijo ?? ''}${conSigno(t.lang, dato.valor, dato.decimales)}${dato.sufijo ?? ''}`;
+const publica = dato.origen === 'publico' || dato.origen === 'calculado';
+// Atributos para que el movimiento «contar» la haga subir desde cero. Sin script o con movimiento reducido queda la cifra final.
+// El ancho mínimo (en ch, la tipografía es monoespaciada) evita que la unidad salte mientras cuenta.
+const contar = {
+  'data-contar': '',
+  'data-valor': String(dato.valor),
+  'data-decimales': String(dato.decimales),
+  'data-lang': t.lang,
+  'data-prefijo': dato.prefijo ?? '',
+  'data-sufijo': dato.sufijo ?? '',
+  style: `min-width:${valor.length}ch`,
+};
+---
+
+<div class:list={['border-linea flex flex-col gap-2 border-t pt-4', clase]} data-cifra={dato.id} data-origen={dato.origen}>
+  <Stat unidad={dato.unidad} tamano={tamano}><slot name="valor"><span class="inline-block" {...contar}>{valor}</span></slot></Stat>
+  <p class="text-cuerpo text-tinta">{texto}</p>
+  <p class="rotulo text-texto-2">
+    {
+      publica ? (
+        <>
+          {t.interfaz.fuente}:{' '}
+          {dato.enlace ? <a href={dato.enlace} rel="noopener noreferrer" class="underline underline-offset-2">{dato.fuente}</a> : dato.fuente}
+        </>
+      ) : (
+        t.interfaz.origen[dato.origen]
+      )
+    }
+  </p>
+</div>

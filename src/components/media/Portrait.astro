@@ -1,0 +1,8 @@
+---
+// Retrato real, con el encuadre común (4:5). Nunca generado con IA.
+import Photo from './Photo.astro';
+interface Props { codigo: string; alt: string; class?: string }
+const { codigo, alt, class: clase } = Astro.props;
+---
+
+<Photo codigo={codigo} alt={alt} sizes="(min-width: 64rem) 20rem, 60vw" class:list={['rounded-tarjeta border-linea aspect-retrato h-auto w-full border object-cover', clase]} />

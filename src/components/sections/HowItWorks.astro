@@ -1,0 +1,29 @@
+---
+// 5 · Cómo funciona: título y texto junto a la foto, los cuatro pasos y los pilares. No explica qué lee el gemelo en cada equipo.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Steps from '@/components/ui/Steps.astro';
+import Prose from '@/components/ui/Prose.astro';
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import FourPrinciples from './FourPrinciples.astro';
+import { entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'como-funciona');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'como-funciona' }>;
+const { Content } = await render(entrada);
+---
+
+<section id={s.ancla} class="py-seccion" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <div class="contenedor flex flex-col gap-12">
+    <div class="grid items-center gap-x-12 gap-y-8 lg:grid-cols-12">
+      <div class="flex flex-col gap-6 lg:col-span-5">
+        <SectionHeading titulo={s.titulo} id={`titulo-${s.id}`} />
+        <Prose><Content /></Prose>
+      </div>
+      <TwinFigure lang={lang} codigo={s.imagen.codigo} alt={s.imagen.alt} rotulo={s.capa_gemelo.rotulo} sizes="(min-width: 64rem) 55vw, 100vw" class="rounded-tarjeta lg:col-span-7" />
+    </div>
+    <Steps pasos={s.pasos} />
+    <FourPrinciples titulo={s.pilares.titulo} lista={s.pilares.lista} />
+  </div>
+</section>

@@ -1,0 +1,16 @@
+// Cloudflare Workers con recursos estáticos. El sitio se genera en la compilación; el Worker solo atiende /api/contacto.
+// Astro completa `main` y `assets.directory` al compilar (dist/server/wrangler.json).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "agento-cloud-sitio",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "not_found_handling": "404-page" },
+  "observability": { "enabled": true }
+
+  // Al desplegar (ver README › Despliegue):
+  // "routes": [{ "pattern": "agentocloud.com", "custom_domain": true }],
+  // "send_email": [{ "name": "EMAIL" }],
+  // "vars": { "CORREO_REMITENTE": "web@agentocloud.com", "CORREO_DESTINO": "contacto@agentocloud.com" }
+  // Secreto: wrangler secret put TURNSTILE_SECRET
+}

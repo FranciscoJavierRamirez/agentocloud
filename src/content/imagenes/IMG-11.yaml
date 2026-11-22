@@ -1,0 +1,15 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-11"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-11-escritorio.webp"
+  ancho: 2016
+  alto: 672
+  foco: [50, 60]
+celular:
+  archivo: "IMG-11-celular.webp"
+  ancho: 1344
+  alto: 672
+  foco: [50, 60]

@@ -1,0 +1,52 @@
+---
+// 1 · Hero. HTML, CSS y el módulo de movimientos: sin React. La foto es el elemento LCP y es visible desde el primer cuadro.
+// Tres composiciones: celular, placa abajo sobre la foto · tableta, foto arriba y texto debajo (la placa tapaba el gemelo) ·
+// escritorio, texto sobre un velo lateral de sal que deja el gemelo libre a la derecha.
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import TechLabel from '@/components/ui/TechLabel.astro';
+import Button from '@/components/ui/Button.astro';
+import Plate from '@/components/ui/Plate.astro';
+import { comunes, destino, seccion } from '@/lib/i18n';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const [t, hero] = await Promise.all([comunes(lang), seccion(lang, 'hero')]);
+---
+
+<section id={hero.ancla} class="alto-hero en-escena relative flex md:max-lg:flex-col" data-seccion={hero.orden} data-escena="hero" aria-labelledby="titulo-hero">
+  <TwinFigure
+    lang={lang}
+    codigo={hero.imagen.codigo}
+    alt={hero.imagen.alt}
+    rotulo={hero.capa_gemelo.rotulo}
+    ajuste="llenar"
+    animacion="escena"
+    lcp
+    marcas={false}
+    nombre="hero"
+    class="absolute! inset-0 md:max-lg:relative! md:max-lg:inset-auto md:max-lg:alto-foto-hero md:max-lg:w-full md:max-lg:shrink-0"
+  />
+  <div class="velo-lateral pointer-events-none absolute inset-0 z-(--z-capa-gemelo) max-lg:hidden" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-0 z-(--z-capa-gemelo)" data-amanecer aria-hidden="true"></div>
+  <div class="contenedor relative z-(--z-rotulo) flex flex-col justify-end pb-6 md:justify-center md:py-12 lg:py-0">
+    <Plate class="flex flex-col gap-5 md:max-w-2xl md:bg-transparent! md:p-0! lg:max-w-xl xl:max-w-2xl">
+      <TechLabel texto={hero.rotulo} data-mov="subir" />
+      <h1 id="titulo-hero" class="font-display text-titular" data-mov="subir" data-titular>{hero.titulo}</h1>
+      <p class="text-bajada text-tinta" data-mov="subir">{hero.bajada}</p>
+      <div class="flex flex-col gap-2 sm:flex-row" data-mov="subir">
+        {
+          hero.botones.map((b) => (
+            <Button
+              href={destino(lang, b)}
+              variant={b.variante === 'principal' ? 'primary' : 'secondary'}
+              flecha={b.variante === 'principal'}
+              data-evento={b.variante === 'principal' ? 'agendar' : undefined}
+              data-origen="hero"
+            >
+              {b.texto}
+            </Button>
+          ))
+        }
+      </div>
+    </Plate>
+  </div>
+</section>

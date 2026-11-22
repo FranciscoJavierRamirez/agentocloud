@@ -1,0 +1,19 @@
+---
+// Los cuatro principios: solo el enunciado. El texto de cada uno es opcional (el detalle se conversa, no se publica).
+interface Props { titulo: string; lista: { titulo: string; texto?: string }[] }
+const { titulo, lista } = Astro.props;
+---
+
+<div class="flex flex-col gap-6">
+  <h3 class="rotulo text-texto-2">{titulo}</h3>
+  <ul class="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      lista.map((principio) => (
+        <li class="border-linea flex flex-col gap-2 border-t py-5">
+          <h4 class="font-display text-sub font-semibold text-balance">{principio.titulo}</h4>
+          {principio.texto && <p class="text-cuerpo text-texto-2">{principio.texto}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</div>

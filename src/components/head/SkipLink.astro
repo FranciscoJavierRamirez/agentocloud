@@ -1,0 +1,9 @@
+---
+interface Props { texto: string }
+const { texto } = Astro.props;
+---
+
+<a
+  href="#contenido"
+  class="rounded-control bg-tinta text-sobre text-cuerpo fixed top-2 left-2 z-(--z-dialogo) -translate-y-24 px-4 py-3 font-medium focus:translate-y-0"
+>{texto}</a>

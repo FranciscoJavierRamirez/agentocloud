@@ -1,0 +1,15 @@
+---
+// Línea de cota con topes, como en un plano. Con etiqueta opcional (por ejemplo "13 DÍAS").
+// Va en HTML y no en un SVG estirado: con preserveAspectRatio="none", pathLength y trazo sin escala,
+// Chrome dibujaba la línea cortada en tramos.
+interface Props { etiqueta?: string; class?: string; trazar?: boolean }
+const { etiqueta, class: clase, trazar = true } = Astro.props;
+---
+
+<div class:list={['text-tinta flex items-center gap-3', clase]} aria-hidden={etiqueta ? undefined : 'true'}>
+  {/* El trazo escala la cota completa: el tope derecho viaja con la punta de la línea, no queda suelto. */}
+  <span class:list={['border-tinta/35 relative h-2 min-w-0 flex-1 border-x', trazar && 'trazo-x']} aria-hidden="true">
+    <span class="bg-tinta/35 absolute inset-x-0 top-1/2 h-px -translate-y-1/2"></span>
+  </span>
+  {etiqueta && <span class="rotulo text-texto-2 whitespace-nowrap">{etiqueta}</span>}
+</div>

@@ -1,0 +1,23 @@
+---
+// 6 · Cuánto cuesta esperar: título, texto y la invitación a revisar el sistema. Sin calculadora ni fórmula:
+// el detalle se conversa uno a uno, no se publica.
+import SectionLead from '@/components/ui/SectionLead.astro';
+import Prose from '@/components/ui/Prose.astro';
+import Button from '@/components/ui/Button.astro';
+import { destino, entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'costo-de-esperar');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'costo-de-esperar' }>;
+const { Content } = await render(entrada);
+---
+
+<section id={s.ancla} class="border-linea bg-sup py-seccion border-y" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <div class="contenedor">
+    <SectionLead titulo={s.titulo} id={`titulo-${s.id}`}>
+      <Prose><Content /></Prose>
+      <Button href={destino(lang, s.boton)} flecha class="self-start" data-evento="agendar" data-origen="costo-de-esperar">{s.boton.texto}</Button>
+    </SectionLead>
+  </div>
+</section>

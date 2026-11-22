@@ -1,0 +1,10 @@
+# Figure registry, English (same ids and values as es.yaml; only units and sources are translated).
+# Do not add figures without asking.
+lista:
+  - { id: agua-de-mar-2034, valor: 68, decimales: 0, unidad: "%", fuente: "Cochilco", origen: publico, enlace: null, consultado: null }
+  - { id: impulsion-twh-2034, valor: 4.3, decimales: 1, unidad: "TWh", fuente: "Cochilco", origen: publico, enlace: null, consultado: null }
+  # kwh-m3-3000m: 9.81 × head ÷ 3,600 (theoretical energy, no losses). The formula is not published.
+  - { id: kwh-m3-3000m, valor: 8.2, decimales: 1, unidad: "kWh/m³", fuente: "Own calculation", origen: calculado, enlace: null, consultado: null }
+  - { id: prototipo-gemelos, valor: 2, decimales: 0, unidad: "", fuente: "Own data", origen: simulado, enlace: null, consultado: null }
+  - { id: prototipo-historias, valor: 49, decimales: 0, unidad: "", fuente: "Own data", origen: propio, enlace: null, consultado: null }
+  - { id: prototipo-pruebas, valor: 280, decimales: 0, unidad: "", sufijo: "+", fuente: "Own data", origen: propio, enlace: null, consultado: null }

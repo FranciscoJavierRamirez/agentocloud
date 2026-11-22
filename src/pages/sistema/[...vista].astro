@@ -1,0 +1,190 @@
+---
+// Página interna de sistema: todos los componentes con sus estados. Sin indexar y fuera del menú.
+// Es la documentación viva del sitio y el lugar donde se aprueba cada pieza antes de usarla en una página.
+// Solo existe en desarrollo (pnpm dev): la compilación de producción no la genera, porque muestra piezas que el sitio no publica.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ThemeScope from '@/components/head/ThemeScope.astro';
+import Button from '@/components/ui/Button.astro';
+import ArrowLink from '@/components/ui/ArrowLink.astro';
+import TechLabel from '@/components/ui/TechLabel.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Dimension from '@/components/ui/Dimension.astro';
+import Stat from '@/components/ui/Stat.astro';
+import SourcedStat from '@/components/ui/SourcedStat.astro';
+import RealityNote from '@/components/ui/RealityNote.astro';
+import Card from '@/components/ui/Card.astro';
+import PhotoCard from '@/components/ui/PhotoCard.astro';
+import Plate from '@/components/ui/Plate.astro';
+import Accordion from '@/components/ui/Accordion.astro';
+import Steps from '@/components/ui/Steps.astro';
+import StatusChip from '@/components/ui/StatusChip.astro';
+import Field from '@/components/ui/Field.astro';
+import Prose from '@/components/ui/Prose.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Logo from '@/components/media/Logo.astro';
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import Portrait from '@/components/media/Portrait.astro';
+import PrototypeFrame from '@/components/media/PrototypeFrame.astro';
+import ReliefTexture from '@/components/media/ReliefTexture.astro';
+import PipelineProfile from '@/components/charts/PipelineProfile.astro';
+import BalanceBarsStatic from '@/components/charts/BalanceBarsStatic.astro';
+import DeviationChartStatic from '@/components/charts/DeviationChartStatic.astro';
+import ReadOnlyDiagram from '@/components/charts/ReadOnlyDiagram.astro';
+import FourStepsDiagram from '@/components/charts/FourStepsDiagram.astro';
+import StageTimeline from '@/components/charts/StageTimeline.astro';
+import { comunes, idiomaPorDefecto, paginaPorTipo, seccion } from '@/lib/i18n';
+
+const lang = idiomaPorDefecto;
+const [t, hero, juego, balance, diferencia, como, cada, seguridad, donde, preguntas, quienes] = await Promise.all([
+  comunes(lang), seccion(lang, 'hero'), seccion(lang, 'en-juego'), seccion(lang, 'balance'), seccion(lang, 'diferencia'),
+  seccion(lang, 'como-funciona'), seccion(lang, 'para-cada-uno'), seccion(lang, 'seguridad'), seccion(lang, 'donde-estamos'),
+  seccion(lang, 'preguntas'), seccion(lang, 'quienes-somos'),
+]);
+const empresa = await paginaPorTipo(lang, 'empresa');
+const etapa = empresa?.data.tipo === 'empresa' ? empresa.data.etapa : undefined;
+const colores = ['bg-fondo', 'bg-sup', 'bg-sup-2', 'bg-tinta', 'bg-texto-2', 'bg-patina', 'bg-patina-texto', 'bg-cobre', 'bg-cobre-texto', 'bg-ok', 'bg-vigilar', 'bg-alerta'];
+const tipos = ['text-titular', 'text-seccion', 'text-bajada', 'text-sub', 'text-cuerpo', 'text-nota'];
+const iconos = ['flecha', 'externo', 'anterior', 'siguiente', 'menu', 'menos', 'mas', 'cerrar', 'candado', 'correo'] as const;
+const escenarios = balance.estanque.escenarios;
+const bloque = 'border-linea flex flex-col gap-6 border-t py-10';
+const titulo = 'rotulo text-texto-2';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { vista: undefined } }] : [];
+}
+---
+
+<BaseLayout lang={lang} titulo={`Sistema · ${t.organizacion.nombre}`} indexar={false}>
+  <div class="contenedor py-seccion flex flex-col">
+    <SectionHeading nivel="h1" titulo="Sistema" rotulo="PÁGINA INTERNA · SIN INDEXAR" />
+
+    <section class={bloque}>
+      <h2 class={titulo}>Color · tema claro</h2>
+      <ul class="grid grid-cols-3 gap-3 md:grid-cols-6">
+        {colores.map((c) => <li class="flex flex-col gap-1"><span class:list={['border-linea rounded-control h-12 border', c]} /><code class="text-nota">{c.replace('bg-', '')}</code></li>)}
+      </ul>
+      <ThemeScope class="rounded-tarjeta p-5">
+        <p class={titulo}>Color · tema oscuro (solo Seguridad y marco del prototipo)</p>
+        <ul class="mt-4 grid grid-cols-3 gap-3 md:grid-cols-6">
+          {colores.map((c) => <li class="flex flex-col gap-1"><span class:list={['border-linea rounded-control h-12 border', c]} /><code class="text-nota">{c.replace('bg-', '')}</code></li>)}
+        </ul>
+      </ThemeScope>
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Tipografía</h2>
+      {tipos.map((clase) => <p class:list={[clase, clase === 'text-titular' || clase === 'text-seccion' ? 'font-display' : '']}>{clase.replace('text-', '')} · {hero.titulo}</p>)}
+      <p class="rotulo">rotulo · {hero.rotulo}</p>
+      <Stat unidad={juego.perfil.contador.unidad}>8,2</Stat>
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Botón, enlace e iconos</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <Button href="#">{t.navegacion.accion_principal.texto}</Button>
+        <Button href="#" flecha>{t.navegacion.accion_principal.texto}</Button>
+        <Button href="#" variant="secondary">{hero.botones[1].texto}</Button>
+        <Button disabled class="opacity-60">{t.formulario.enviando}</Button>
+        <ArrowLink href="#">{t.interfaz.ver_empresa}</ArrowLink>
+      </div>
+      <ul class="flex flex-wrap gap-4">{iconos.map((i) => <li class="flex items-center gap-2"><Icon nombre={i} /><code class="text-nota">{i}</code></li>)}</ul>
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Rótulo técnico · sobre sal, sobre foto y sobre tinta</h2>
+      <TechLabel texto={hero.capa_gemelo.rotulo} />
+      <div class="bg-sup-2 rounded-tarjeta p-5"><TechLabel texto={hero.capa_gemelo.rotulo} sobre="foto" brecha /></div>
+      <ThemeScope class="rounded-tarjeta flex flex-col gap-3 p-5">
+        <TechLabel texto={hero.capa_gemelo.rotulo} />
+        <TechLabel texto={hero.capa_gemelo.rotulo} sobre="foto" brecha />
+      </ThemeScope>
+      <Dimension etiqueta="13 DÍAS ANTES" />
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Capa del gemelo · con brecha, sin brecha y en reposo</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        <TwinFigure lang={lang} codigo={balance.imagen.codigo} alt={balance.imagen.alt} rotulo={escenarios[1].rotulo_capa} estado="brecha" animacion="ninguna" class="rounded-tarjeta" />
+        <TwinFigure lang={lang} codigo={balance.imagen.codigo} alt={balance.imagen.alt} estado="cierra" animacion="ninguna" class="rounded-tarjeta" />
+      </div>
+      <TwinFigure lang={lang} codigo={hero.imagen.codigo} alt={hero.imagen.alt} rotulo={hero.capa_gemelo.rotulo} animacion="ninguna" />
+      <TwinFigure lang={lang} codigo={juego.imagen.codigo} alt={juego.imagen.alt} cotas={juego.perfil.puntos} />
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Estados, cifras y declaración de realidad</h2>
+      <div class="flex flex-wrap gap-3">
+        <StatusChip estado="cierra">{escenarios[0].veredicto}</StatusChip>
+        <StatusChip estado="no-cierra">{escenarios[1].veredicto}</StatusChip>
+        <StatusChip estado="simulado">{t.declaracion_realidad.corta}</StatusChip>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <SourcedStat lang={lang} cifra={juego.cifras[0].cifra} texto={juego.cifras[0].texto} />
+        <SourcedStat lang={lang} cifra={juego.perfil.contador.cifra} texto={juego.perfil.nota} />
+        <SourcedStat lang={lang} cifra={donde.cifras[0].cifra} texto={donde.cifras[0].texto} />
+      </div>
+      <RealityNote lang={lang} />
+      <RealityNote lang={lang} tipo="imagen" />
+      <RealityNote lang={lang} tipo="etapa" />
+      <RealityNote lang={lang} origen="medido" />
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Gráficos en reposo</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        {escenarios.map((e) => (
+          <Card class="flex flex-col gap-4">
+            <p class="rotulo">{e.etiqueta}</p>
+            <BalanceBarsStatic lang={t.lang} etiquetas={balance.estanque.barras} unidad={balance.estanque.unidad} entra={e.entra} sale={e.sale} cambio={e.cambio} cierra={e.cierra} sensorRayado={e.sensor_rayado} />
+          </Card>
+        ))}
+      </div>
+      <div class="grid gap-6 md:grid-cols-2">
+        {diferencia.vistas.map((v) => (
+          <Card class="flex flex-col gap-3">
+            <p class="rotulo">{v.etiqueta}</p>
+            <DeviationChartStatic vista={v.id} series={diferencia.grafico.series} ejeX={diferencia.grafico.eje_x} ejeY={diferencia.grafico.eje_y} alt={diferencia.grafico.alt} />
+          </Card>
+        ))}
+      </div>
+      <PipelineProfile puntos={juego.perfil.puntos} nota={juego.perfil.nota} lang={t.lang} unidad={juego.perfil.contador.unidad} />
+      <Card><FourStepsDiagram nodos={como.plano.nodos} flecha={como.plano.flecha} alt={como.plano.alt} pie={como.plano.pie} /></Card>
+      <ThemeScope class="rounded-tarjeta p-5"><ReadOnlyDiagram nodos={seguridad.esquema.nodos} flecha={seguridad.esquema.flecha} alt={seguridad.esquema.alt} /></ThemeScope>
+      {etapa && <StageTimeline hay={etapa.hay} sigue={etapa.sigue} />}
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Tarjetas, placa, pasos y acordeón</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card><p class="text-cuerpo">{como.pilares.lista[0].texto}</p></Card>
+        <PhotoCard lang={lang} titulo={cada.tarjetas[1].titulo} texto={cada.tarjetas[1].texto} imagen={cada.tarjetas[1].imagen} rotulo={cada.tarjetas[1].capa_gemelo} />
+      </div>
+      <div class="bg-sup-2 rounded-tarjeta relative isolate overflow-hidden p-8"><ReliefTexture /><Plate><p class="text-bajada">{hero.bajada}</p></Plate></div>
+      <Steps pasos={como.pasos} />
+      <div>{preguntas.preguntas.slice(0, 2).map((p, i) => <Accordion titulo={p.pregunta} abierto={i === 0}><p>{p.respuesta}</p></Accordion>)}</div>
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Campo de formulario · vacío, con ayuda y con error</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <Field id="s-nombre" etiqueta={t.formulario.campos.nombre} />
+        <Field id="s-correo" etiqueta={t.formulario.campos.correo} tipo="email" ejemplo={t.formulario.ejemplo_correo} ayuda={t.formulario.ayuda} />
+        <Field id="s-error" etiqueta={t.formulario.campos.correo} tipo="email" valor="nombre@" error={t.formulario.errores.correo} />
+      </div>
+    </section>
+
+    <section class={bloque}>
+      <h2 class={titulo}>Marca, retrato, captura y texto largo</h2>
+      <div class="flex flex-wrap items-center gap-8">
+        <Logo alt={t.organizacion.nombre} class="h-12 w-auto" />
+        <Logo alt={t.organizacion.nombre} variante="simbolo" class="size-12" />
+        <ThemeScope class="rounded-tarjeta p-5"><Logo alt={t.organizacion.nombre} class="h-12 w-auto" /></ThemeScope>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <Portrait codigo={quienes.personas[0].retrato} alt={quienes.personas[0].foto_alt} />
+        <div class="md:col-span-2"><PrototypeFrame lang={lang} alt={donde.captura.alt} rotulo={donde.captura.rotulo} /></div>
+      </div>
+      <Prose><h2>{como.pilares.titulo}</h2><p>{como.pilares.lista[1].texto}</p><ul><li>{seguridad.puntos[0].texto}</li><li>{seguridad.puntos[1].texto}</li></ul></Prose>
+    </section>
+  </div>
+</BaseLayout>

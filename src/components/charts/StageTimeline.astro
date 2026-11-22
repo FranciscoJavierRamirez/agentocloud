@@ -1,0 +1,23 @@
+---
+// Lo que hay y lo que sigue, sin adornos.
+interface Props { hay: { titulo: string; puntos: string[] }; sigue: { titulo: string; puntos: string[] } }
+const { hay, sigue } = Astro.props;
+const columnas = [{ ...hay, lleno: true }, { ...sigue, lleno: false }];
+---
+
+<ol class="grid gap-8 md:grid-cols-2">
+  {
+    columnas.map((columna) => (
+      <li class="flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+          <span aria-hidden="true" class:list={['border-tinta size-3 shrink-0 rounded-full border', columna.lleno ? 'bg-tinta' : 'border-dashed']} />
+          <h3 class="rotulo text-tinta">{columna.titulo}</h3>
+          <span aria-hidden="true" class:list={['border-tinta/40 flex-1 border-t', !columna.lleno && 'border-dashed']} />
+        </div>
+        <ul class="text-cuerpo text-tinta flex flex-col gap-3">
+          {columna.puntos.map((punto) => <li class="max-w-lectura">{punto}</li>)}
+        </ul>
+      </li>
+    ))
+  }
+</ol>

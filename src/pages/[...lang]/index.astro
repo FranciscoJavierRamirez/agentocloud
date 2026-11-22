@@ -1,0 +1,41 @@
+---
+// Inicio: la historia completa, en una página.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/Hero.astro';
+import IntroStrip from '@/components/sections/IntroStrip.astro';
+import AtStake from '@/components/sections/AtStake.astro';
+import BalanceSection from '@/components/sections/BalanceSection.astro';
+import DifferenceSection from '@/components/sections/DifferenceSection.astro';
+import HowItWorks from '@/components/sections/HowItWorks.astro';
+import CostOfWaiting from '@/components/sections/CostOfWaiting.astro';
+import ForEachRole from '@/components/sections/ForEachRole.astro';
+import SecuritySection from '@/components/sections/SecuritySection.astro';
+import WhereWeAre from '@/components/sections/WhereWeAre.astro';
+import FirstStep from '@/components/sections/FirstStep.astro';
+import TeamSection from '@/components/sections/TeamSection.astro';
+import FaqSection from '@/components/sections/FaqSection.astro';
+import { idiomasActivos, parametroIdioma, seccion } from '@/lib/i18n';
+
+export function getStaticPaths() {
+  return idiomasActivos.map((lang) => ({ params: { lang: parametroIdioma(lang) }, props: { lang } }));
+}
+const { lang } = Astro.props;
+const preguntas = await seccion(lang, 'preguntas');
+const rutas = Object.fromEntries(idiomasActivos.map((l) => [l, '']));
+---
+
+<BaseLayout lang={lang} og="inicio" rutas={rutas} preguntas={preguntas.preguntas} carril={12} barraFija>
+  <Hero lang={lang} />
+  <IntroStrip lang={lang} />
+  <AtStake lang={lang} />
+  <BalanceSection lang={lang} />
+  <DifferenceSection lang={lang} />
+  <HowItWorks lang={lang} />
+  <CostOfWaiting lang={lang} />
+  <ForEachRole lang={lang} />
+  <SecuritySection lang={lang} />
+  <WhereWeAre lang={lang} />
+  <TeamSection lang={lang} />
+  <FaqSection lang={lang} />
+  <FirstStep lang={lang} />
+</BaseLayout>

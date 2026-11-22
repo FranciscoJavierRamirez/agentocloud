@@ -1,0 +1,29 @@
+---
+// Franja de descripción bajo el hero: qué es Agento (definición) y qué hace (cuatro puntos numerados).
+// Asoma bajo el hero e invita a bajar sin flecha animada.
+import TechLabel from '@/components/ui/TechLabel.astro';
+import { seccion } from '@/lib/i18n';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const { intro } = await seccion(lang, 'hero');
+---
+
+<div class="border-linea bg-sup border-y" role="region" aria-labelledby="intro-definicion">
+  <div class="contenedor flex flex-col gap-10 py-14 md:py-20">
+    <div class="flex max-w-4xl flex-col gap-5">
+      <TechLabel texto={intro.rotulo} />
+      <p id="intro-definicion" class="font-display text-seccion text-tinta text-balance">{intro.definicion}</p>
+    </div>
+    <ol class="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        intro.puntos.map((punto, i) => (
+          <li class="border-linea flex flex-col gap-3 border-t py-5">
+            <span class="rotulo text-patina-texto tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+            <span class="text-cuerpo-lg text-tinta">{punto}</span>
+          </li>
+        ))
+      }
+    </ol>
+    <TechLabel texto={intro.alcance} />
+  </div>
+</div>

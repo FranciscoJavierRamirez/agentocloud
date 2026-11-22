@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 2040" fill="none">
+  <!-- Calzada 22-nov-2026: centro en el eje de la aguja. Esperado = banda normal del dial; medido llega hasta la aguja, que la pasa. -->
+  <path id="esperado" pathLength="1" d="M738.8,654.8 A300,300 0 1 1 1260.8,950.1"/>
+  <path id="medido" pathLength="1" d="M765.3,668.8 A270,270 0 1 1 1210.5,969.2"/>
+  <path id="brecha" d="M1260.8,950.1 A300,300 0 0 1 1233.5,988.4 L1210.5,969.2 A270,270 0 0 0 1235.1,934.7 Z"/>
+  <circle id="anillo" cx="1222.0" cy="978.8" r="62"/>
+</svg>

@@ -1,0 +1,8 @@
+# Registro de cifras: fuente única de todo número del sitio. No se agregan cifras sin pedirlas.
+lista:
+  - { id: agua-de-mar-2034, valor: 68, decimales: 0, unidad: "%", fuente: "Cochilco", origen: publico, enlace: null, consultado: null }
+  - { id: impulsion-twh-2034, valor: 4.3, decimales: 1, unidad: "TWh", fuente: "Cochilco", origen: publico, enlace: null, consultado: null }
+  - { id: kwh-m3-3000m, valor: 8.2, decimales: 1, unidad: "kWh/m³", fuente: "Cálculo propio", origen: calculado, enlace: null, consultado: null }
+  - { id: prototipo-gemelos, valor: 2, decimales: 0, unidad: "", fuente: "Propio", origen: simulado, enlace: null, consultado: null }
+  - { id: prototipo-historias, valor: 49, decimales: 0, unidad: "", fuente: "Propio", origen: propio, enlace: null, consultado: null }
+  - { id: prototipo-pruebas, valor: 280, decimales: 0, unidad: "", sufijo: "+", fuente: "Propio", origen: propio, enlace: null, consultado: null }

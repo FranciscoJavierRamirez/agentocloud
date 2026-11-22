@@ -1,0 +1,25 @@
+---
+// Botón flotante de WhatsApp: un enlace a wa.me con el mensaje ya escrito. Sin script de terceros.
+// Círculo con el símbolo (el nombre va para lectores de pantalla y como tooltip). En celular se retira cuando aparece la barra fija, que trae su propio botón de WhatsApp.
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { comunes } from '@/lib/i18n';
+import { enlaceWhatsapp } from '@/lib/contacto';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = await comunes(lang);
+---
+
+<a
+  href={enlaceWhatsapp(t.whatsapp.numero, t.whatsapp.mensaje)}
+  target="_blank"
+  rel="noopener noreferrer"
+  title={t.whatsapp.etiqueta}
+  class="bg-whatsapp text-whatsapp-simbolo sombra-flotante ease-agento fixed right-4 bottom-4 z-(--z-whatsapp) flex size-14 items-center justify-center rounded-full no-underline transition duration-(--dur-1) hover:scale-105 active:scale-97 print:hidden md:right-6 md:bottom-6"
+  data-whatsapp
+  data-evento="whatsapp"
+  data-origen="flotante"
+>
+  <WhatsAppIcon class="size-7" />
+  <span class="sr-only">{t.whatsapp.etiqueta}</span>
+  <span class="sr-only"> {t.interfaz.abre_en_otra_pestana}</span>
+</a>

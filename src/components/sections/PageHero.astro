@@ -1,0 +1,20 @@
+---
+// Cabecera de página interior: rótulo, título y una entrada de dos líneas que se puede citar sola, sobre foto o textura.
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import ReliefTexture from '@/components/media/ReliefTexture.astro';
+import TechLabel from '@/components/ui/TechLabel.astro';
+import Plate from '@/components/ui/Plate.astro';
+interface Props { lang: string; rotulo: string; titulo: string; entrada: string; imagen?: { codigo: string; alt: string } }
+const { lang, rotulo, titulo, entrada, imagen } = Astro.props;
+---
+
+<section class="relative isolate flex" aria-labelledby="titulo-pagina">
+  {imagen ? <TwinFigure lang={lang} codigo={imagen.codigo} alt={imagen.alt} ajuste="llenar" lcp marcas={false} class="absolute! inset-0 -z-10" /> : <ReliefTexture />}
+  <div class="contenedor py-seccion">
+    <Plate class="flex flex-col gap-5 md:max-w-3xl">
+      <TechLabel texto={rotulo} />
+      <h1 id="titulo-pagina" class="font-display text-titular">{titulo}</h1>
+      <p class="text-bajada text-tinta max-w-lectura">{entrada}</p>
+    </Plate>
+  </div>
+</section>

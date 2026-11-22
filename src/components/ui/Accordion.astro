@@ -1,0 +1,14 @@
+---
+// <details> nativo: foco y teclado resueltos por el navegador.
+import Icon from './Icon.astro';
+interface Props { titulo: string; abierto?: boolean; nombre?: string }
+const { titulo, abierto = false, nombre } = Astro.props;
+---
+
+<details class="border-linea group border-b" open={abierto} name={nombre}>
+  <summary class="min-h-toque text-sub flex items-center justify-between gap-4 py-4 font-medium">
+    <span>{titulo}</span>
+    <Icon nombre="mas" class="signo text-texto-2" />
+  </summary>
+  <div class="text-cuerpo text-texto-2 max-w-lectura pb-5"><slot /></div>
+</details>

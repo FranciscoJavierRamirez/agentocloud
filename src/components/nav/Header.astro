@@ -1,0 +1,26 @@
+---
+// Logo, navegación y acción principal.
+import Logo from '@/components/media/Logo.astro';
+import Button from '@/components/ui/Button.astro';
+import MainNav from './MainNav.astro';
+import MobileMenu from './MobileMenu.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { comunes, destino, ruta } from '@/lib/i18n';
+interface Props { lang: string; rutas?: Record<string, string> }
+const { lang, rutas } = Astro.props;
+const t = await comunes(lang);
+---
+
+<header class="bg-fondo border-linea sticky top-0 z-(--z-nav) border-b">
+  <div class="contenedor flex h-16 items-center justify-between gap-4">
+    <a href={ruta(lang)} class="flex min-h-toque shrink-0 items-center" aria-label={t.navegacion.logo_alt}>
+      <Logo alt="" ciclo class="h-8 w-auto" />
+    </a>
+    <nav aria-label={t.interfaz.navegacion_principal} class="max-lg:hidden"><MainNav lang={lang} /></nav>
+    <div class="flex shrink-0 items-center gap-2">
+      <LanguageSwitcher lang={lang} rutas={rutas} />
+      <Button href={destino(lang, t.navegacion.accion_principal)} class="whitespace-nowrap max-md:hidden" data-evento="agendar" data-origen="encabezado">{t.navegacion.accion_principal.texto}</Button>
+      <MobileMenu lang={lang} rutas={rutas} />
+    </div>
+  </div>
+</header>

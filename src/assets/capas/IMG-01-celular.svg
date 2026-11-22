@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 2048" fill="none">
+  <!-- Calzada sobre la foto IMG-01-celular de 22-nov-2026: la línea sigue la cañería y el anillo marca el pozo del centro. -->
+  <path id="esperado" pathLength="1" d="M0,1022 L294,881 L465,783 L722,649 L881,588 L1004,545 L1096,512"/>
+  <path id="medido" pathLength="1" d="M0,1022 L294,881 L465,783 L620,702.2 L650,716 L760,664 L790,622.9 L881,588 L1004,545 L1096,512"/>
+  <path id="brecha" d="M620,702.2 L650,716 L760,664 L790,622.9 L722,649 Z"/>
+  <circle id="anillo" cx="563" cy="598" r="62"/>
+</svg>

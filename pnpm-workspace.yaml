@@ -1,0 +1,35 @@
+# Cadena de suministro: reglas de instalación del proyecto (pnpm 11).
+# Se escriben antes del primer `pnpm install`. No relajar sin revisar.
+
+# No instala versiones publicadas hace menos de 7 días (por defecto: 1 día).
+minimumReleaseAge: 10080
+minimumReleaseAgeStrict: true
+# Excepciones revisadas, siempre con versión exacta.
+minimumReleaseAgeExclude: [ fflate@0.7.5 ]
+
+# Rechaza versiones cuya evidencia de procedencia bajó respecto de las anteriores.
+trustPolicy: no-downgrade
+trustPolicyExclude: []
+
+# Sin dependencias transitivas desde git ni tarballs directos.
+blockExoticSubdeps: true
+
+# Ningún paquete ejecuta scripts de instalación salvo los autorizados aquí.
+strictDepBuilds: true
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: false
+
+# Versiones exactas y entorno comprobado.
+saveExact: true
+savePrefix: ''
+engineStrict: true
+verifyDepsBeforeRun: error
+strictPeerDependencies: true
+autoInstallPeers: false
+
+# Correcciones de seguridad en dependencias transitivas (revisar al actualizar).
+overrides:
+  # GHSA-px8p-9vwx-vf98 · llega por satori (solo en la compilación de las imágenes para compartir).
+  fflate: 0.7.5

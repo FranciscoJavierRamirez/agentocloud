@@ -1,0 +1,30 @@
+---
+// Asesores. Se renderiza solo si la colección tiene entradas (nombres con aceptación escrita).
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import ArrowLink from '@/components/ui/ArrowLink.astro';
+import { asesores, comunes } from '@/lib/i18n';
+interface Props { lang: string; titulo: string }
+const { lang, titulo } = Astro.props;
+const lista = await asesores(lang);
+const t = await comunes(lang);
+---
+
+{
+  lista.length > 0 && (
+    <section class="py-seccion" aria-labelledby="titulo-asesores">
+      <div class="contenedor flex flex-col gap-10">
+        <SectionHeading titulo={titulo} id="titulo-asesores" />
+        <ul class="grid gap-8 md:grid-cols-2">
+          {lista.map((a) => (
+            <li class="border-linea flex flex-col gap-2 border-t pt-4">
+              <h3 class="font-display text-sub font-semibold">{a.nombre}</h3>
+              <p class="rotulo text-texto-2">{a.cargo}</p>
+              <p class="text-cuerpo text-texto-2">{a.bio}</p>
+              {a.linkedin && <ArrowLink href={a.linkedin} externo avisoExterno={t.interfaz.abre_en_otra_pestana}>{a.nombre}</ArrowLink>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,28 @@
+---
+// Logotipo y símbolo. PROVISIONAL: usa el vector de referencia de forma (logo/gemelo_vector_referencia).
+// Al llegar el vector final en capas, se reemplazan los dos SVG de src/assets/logo/ y nada más.
+// Los trazos llevan pathLength y las clases lg-tinta, lg-gemelo y lg-cloud: el logo se puede trazar.
+import logotipo from '@/assets/logo/logotipo-claro.svg?raw';
+import simbolo from '@/assets/logo/simbolo-claro.svg?raw';
+interface Props {
+  variante?: 'logotipo' | 'simbolo';
+  alt: string;
+  /** Se traza una vez al entrar en pantalla (pie) */
+  trazar?: boolean;
+  /** Se traza al cargar y se repite cada cierto tiempo (encabezado) */
+  ciclo?: boolean;
+  class?: string;
+}
+const { variante = 'logotipo', alt, trazar = false, ciclo = false, class: clase } = Astro.props;
+
+const fuente = variante === 'logotipo' ? logotipo : simbolo;
+const viewBox = fuente.match(/viewBox="([^"]+)"/)![1];
+// Se quita el fondo opaco y los colores fijos: el color lo pone el tema (claro u oscuro).
+const interior = fuente
+  .replace(/^<svg[^>]*>/, '')
+  .replace(/<\/svg>\s*$/, '')
+  .replace(/<rect[^>]*\/>/, '')
+  .replace(/\sstroke="#[0-9A-Fa-f]{6}"/g, '');
+---
+
+<svg class={clase} viewBox={viewBox} role="img" aria-label={alt} data-logo={ciclo ? 'ciclo' : trazar ? 'trazar' : undefined} set:html={interior} />

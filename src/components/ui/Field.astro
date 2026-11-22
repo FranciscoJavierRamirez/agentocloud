@@ -1,0 +1,37 @@
+---
+// Etiqueta, campo, ayuda y error. El error dice qué pasó y cómo arreglarlo, junto a su campo.
+interface Props {
+  id: string;
+  etiqueta: string;
+  tipo?: 'text' | 'email';
+  opcional?: string;
+  ayuda?: string;
+  error?: string;
+  ejemplo?: string;
+  valor?: string;
+  requerido?: boolean;
+  autocompletar?: string;
+}
+const { id, etiqueta, tipo = 'text', opcional, ayuda, error, ejemplo, valor, requerido = false, autocompletar } = Astro.props;
+---
+
+<div class="flex flex-col gap-2">
+  <label for={id} class="text-cuerpo font-medium">
+    {etiqueta}
+    {opcional && <span class="text-texto-2 font-normal"> {opcional}</span>}
+  </label>
+  <input
+    id={id}
+    name={id}
+    type={tipo}
+    value={valor}
+    placeholder={ejemplo}
+    required={requerido}
+    autocomplete={autocompletar}
+    aria-invalid={error ? 'true' : undefined}
+    aria-describedby={error ? `${id}-error` : ayuda ? `${id}-ayuda` : undefined}
+    class:list={['min-h-toque rounded-control bg-sup text-cuerpo text-tinta placeholder:text-texto-2 border px-4', error ? 'border-alerta' : 'border-linea']}
+  />
+  {ayuda && !error && <p id={`${id}-ayuda`} class="text-nota text-texto-2">{ayuda}</p>}
+  {error && <p id={`${id}-error`} class="text-cuerpo text-alerta">{error}</p>}
+</div>

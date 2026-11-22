@@ -1,0 +1,10 @@
+---
+// Cifra grande con unidad, en Martian Mono tabular: una lectura, no un titular de anuncio.
+interface Props { unidad?: string; tamano?: 'cifra' | 'seccion'; class?: string }
+const { unidad, tamano = 'cifra', class: clase } = Astro.props;
+---
+
+<p class:list={['text-tinta flex flex-wrap items-baseline gap-x-2 font-mono font-medium tabular-nums', tamano === 'cifra' ? 'text-cifra' : 'text-seccion', clase]}>
+  <span class="tracking-tight"><slot /></span>
+  {unidad && <span class="text-sub text-texto-2 font-normal">{unidad}</span>}
+</p>

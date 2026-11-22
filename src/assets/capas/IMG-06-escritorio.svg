@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 2040" fill="none">
+  <!-- Calzada 22-nov-2026: nivel sobre el pozo de monitoreo. -->
+  <path id="esperado" pathLength="1" d="M440,1346.4 L960,1346.4"/>
+  <path id="medido" pathLength="1" d="M440,1362.7 L960,1362.7"/>
+</svg>

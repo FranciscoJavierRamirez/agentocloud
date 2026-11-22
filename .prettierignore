@@ -1,0 +1,6 @@
+doc/
+dist/
+.astro/
+pnpm-lock.yaml
+src/content/
+src/assets/

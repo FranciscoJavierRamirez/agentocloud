@@ -1,0 +1,23 @@
+---
+// Página interior: PageHero, contenido y CtaBand. Hoy la usa Empresa; sirve para cualquier página futura.
+// No tiene islas: una página de contenido no carga React.
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+interface Props {
+  lang: string;
+  titulo: string;
+  seo: { titulo: string; descripcion: string };
+  cabecera: { rotulo: string; entrada: string; imagen?: { codigo: string; alt: string } };
+  cierre: { titulo: string; boton?: string };
+  og: string;
+  rutas: Record<string, string>;
+}
+const { lang, titulo, seo, cabecera, cierre, og, rutas } = Astro.props;
+---
+
+<BaseLayout lang={lang} titulo={seo.titulo} descripcion={seo.descripcion} og={og} rutas={rutas}>
+  <PageHero lang={lang} rotulo={cabecera.rotulo} titulo={titulo} entrada={cabecera.entrada} imagen={cabecera.imagen} />
+  <slot />
+  <CtaBand lang={lang} titulo={cierre.titulo} boton={cierre.boton} />
+</BaseLayout>

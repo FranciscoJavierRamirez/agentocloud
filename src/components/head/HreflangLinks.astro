@@ -1,0 +1,15 @@
+---
+// Enlaces entre idiomas. No emite nada mientras haya un solo idioma.
+import { idiomaPorDefecto, idiomasActivos, prefijo } from '@/lib/i18n';
+interface Props {
+  /** Ruta de esta página sin prefijo de idioma, por idioma: { es: "empresa", en: "company" } */
+  rutas: Record<string, string>;
+  langs: Record<string, string>;
+}
+const { rutas, langs } = Astro.props;
+const url = (lang: string) => new URL(`${prefijo(lang)}/${rutas[lang] ? `${rutas[lang]}/` : ''}`, Astro.site);
+const varios = idiomasActivos.length > 1;
+---
+
+{varios && idiomasActivos.filter((l) => l in rutas).map((l) => <link rel="alternate" hreflang={langs[l] ?? l} href={url(l)} />)}
+{varios && <link rel="alternate" hreflang="x-default" href={url(idiomaPorDefecto)} />}

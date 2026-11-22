@@ -1,0 +1,33 @@
+---
+// Modelo, medición, brecha y umbral de alarma, en reposo. Texto real: se traduce y se lee con lector de pantalla.
+import { geometriaDesviacion, LIENZO, DIA_ALARMA, DIA_DESVIACION } from '@/lib/graficos';
+interface Props {
+  vista?: 'alarma' | 'agento';
+  series: { modelo: string; medicion: string; umbral: string };
+  ejeX: string;
+  ejeY: string;
+  alt: string;
+  class?: string;
+}
+const { vista = 'agento', series, ejeX, ejeY, alt, class: clase } = Astro.props;
+const g = geometriaDesviacion();
+const { ancho, alto, margen } = LIENZO;
+const agento = vista === 'agento';
+---
+
+<svg viewBox={`0 0 ${ancho} ${alto}`} class:list={['h-auto w-full', clase]} role="img" aria-label={alt}>
+  {g.ticksY.map((v) => <path d={`M${margen.izquierda},${g.y(v)} H${ancho - margen.derecha}`} class="stroke-tinta/10" vector-effect="non-scaling-stroke" />)}
+  {g.ticksY.map((v) => <text x={margen.izquierda - 8} y={g.y(v) + 4} text-anchor="end" class="fill-texto-2 font-mono text-nota">{v}</text>)}
+  {g.ticksX.map((d) => <text x={g.x(d)} y={alto - margen.abajo + 16} text-anchor="middle" class="fill-texto-2 font-mono text-nota">{d}</text>)}
+  <text x={ancho - margen.derecha} y={alto - 4} text-anchor="end" class="fill-texto-2 font-mono text-nota tracking-wider uppercase">{ejeX}</text>
+  <text x={margen.izquierda} y={12} class="fill-texto-2 font-mono text-nota tracking-wider uppercase">{ejeY}</text>
+  {agento && <path d={g.banda} class="fill-patina/15" />}
+  {agento && <path d={g.brecha} class="brecha" />}
+  {agento && <path d={g.modelo} class="linea-esperada" />}
+  <path d={`M${margen.izquierda},${g.umbralY} H${ancho - margen.derecha}`} class="stroke-texto-2" stroke-dasharray="1 4" vector-effect="non-scaling-stroke"></path>
+  <text x={margen.izquierda + 4} y={g.umbralY - 6} class="fill-texto-2 font-mono text-nota tracking-wider">{series.umbral}</text>
+  <path d={g.medicion} class="linea-medida"></path>
+  {agento && <circle cx={g.puntoDesviacion.x} cy={g.puntoDesviacion.y} r="9" class="anillo" />}
+  <circle cx={g.puntoAlarma.x} cy={g.puntoAlarma.y} r="4" class:list={['stroke-tinta', agento ? 'fill-fondo opacity-40' : 'fill-tinta']} vector-effect="non-scaling-stroke"></circle>
+  <text x={g.x(agento ? DIA_DESVIACION : DIA_ALARMA)} y={margen.arriba + 4} text-anchor="middle" class="fill-tinta font-mono text-nota">{agento ? DIA_DESVIACION : DIA_ALARMA}</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 2040" fill="none">
+  <path id="esperado" pathLength="1" d="M220.3,959.6 L1550.4,959.6"/>
+  <path id="medido" pathLength="1" d="M220.3,959.6 L635.7,959.6 L707.8,890.3 L924.2,890.3 L996.3,959.6 L1550.4,959.6"/>
+  <path id="brecha" d="M635.7,959.6 L707.8,890.3 L924.2,890.3 L996.3,959.6 Z"/>
+  <circle id="anillo" cx="805" cy="1195" r="128"/>
+</svg>

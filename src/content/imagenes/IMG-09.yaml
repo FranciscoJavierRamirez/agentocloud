@@ -1,0 +1,15 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-09"
+provisional: true
+ilustrativa: true
+tema: "oscuro"
+escritorio:
+  archivo: "IMG-09-escritorio.webp"
+  ancho: 2048
+  alto: 1152
+  foco: [50, 45]
+celular:
+  archivo: "IMG-09-celular.webp"
+  ancho: 1632
+  alto: 2040
+  foco: [50, 45]

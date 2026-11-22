@@ -1,0 +1,29 @@
+---
+// Hoja de menú con <dialog>: foco y tecla Escape resueltos por el navegador. Botón de cerrar siempre visible.
+import MainNav from './MainNav.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { comunes, destino } from '@/lib/i18n';
+interface Props { lang: string; rutas?: Record<string, string> }
+const { lang, rutas } = Astro.props;
+const t = await comunes(lang);
+---
+
+<button type="button" class="min-h-toque min-w-toque text-tinta flex items-center justify-center lg:hidden" data-abre-dialogo="menu" aria-haspopup="dialog">
+  <Icon nombre="menu" tamano="l" />
+  <span class="sr-only">{t.navegacion.menu_abrir}</span>
+</button>
+<dialog id="menu" class="hoja" aria-label={t.interfaz.navegacion_principal}>
+  <div class="flex flex-col gap-4 p-5 pl-9">
+    <div class="flex items-center justify-between">
+      <LanguageSwitcher lang={lang} rutas={rutas} />
+      <button type="button" class="min-h-toque text-cuerpo text-tinta ml-auto flex items-center gap-2 font-medium" data-cierra-dialogo>
+        {t.navegacion.menu_cerrar}
+        <Icon nombre="cerrar" />
+      </button>
+    </div>
+    <nav aria-label={t.interfaz.navegacion_principal}><MainNav lang={lang} vertical /></nav>
+    <Button href={destino(lang, t.navegacion.accion_principal)} ancho="completo" data-evento="agendar" data-origen="menu">{t.navegacion.accion_principal.texto}</Button>
+  </div>
+</dialog>

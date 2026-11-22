@@ -1,0 +1,10 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-05"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-05-escritorio.webp"
+  ancho: 1632
+  alto: 2040
+  foco: [50, 45]

@@ -1,0 +1,39 @@
+---
+// Esquema fijo del sistema: la planta (pozo, bomba, estanque) bajo su sistema de control, y Agento leyendo
+// del historiador en un solo sentido hasta una persona. Nunca hay una flecha de vuelta hacia el control.
+// No se toca ni muestra qué lee el gemelo en cada equipo; el estanque, que tiene una brecha, lleva su anillo de cobre.
+import ReadOnlyDiagram from './ReadOnlyDiagram.astro';
+interface Props {
+  nodos: { control: string; historiador: string; agento: string; persona: string };
+  flecha: string;
+  alt: string;
+  pie: string;
+  class?: string;
+}
+const { nodos, flecha, alt, pie, class: clase } = Astro.props;
+---
+
+<ReadOnlyDiagram nodos={nodos} flecha={flecha} alt={alt} pie={pie} class={clase}>
+  <svg slot="planta" viewBox="24 36 580 164" class="h-auto w-full max-w-3xl" fill="none">
+    <g class="stroke-tinta" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+      <!-- pozo -->
+      <path d="M70,170 V70 M52,70 H88 M40,170 H100" vector-effect="non-scaling-stroke"></path>
+      <circle cx="70" cy="56" r="8" vector-effect="non-scaling-stroke"></circle>
+      <!-- bomba centrífuga (símbolo de P&ID): succión por el eje, descarga tangente arriba, base al suelo -->
+      <circle cx="250" cy="140" r="24" vector-effect="non-scaling-stroke"></circle>
+      <path d="M236,160 L228,170 H272 L264,160" vector-effect="non-scaling-stroke"></path>
+      <!-- estanque -->
+      <path d="M430,60 V170 H560 V60" vector-effect="non-scaling-stroke"></path>
+      <ellipse cx="495" cy="60" rx="65" ry="10" vector-effect="non-scaling-stroke"></ellipse>
+      <!-- tubería: del cabezal del pozo a la succión de la bomba; de la descarga a la entrada baja del estanque -->
+      <path d="M88,70 H130 V140 H226 M250,116 H350 V140 H430" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+    </g>
+    <!-- lo esperado, punteado, sobre todo el sistema -->
+    <path d="M40,186 H590" class="linea-esperada"></path>
+    <!-- lo medido en el estanque: brecha -->
+    <path d="M430,96 H560" class="linea-esperada"></path>
+    <path d="M430,112 H560" class="linea-medida"></path>
+    <path d="M430,96 H560 V112 H430 Z" class="brecha"></path>
+    <circle cx="560" cy="150" r="13" class="anillo"></circle>
+  </svg>
+</ReadOnlyDiagram>

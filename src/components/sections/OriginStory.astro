@@ -1,0 +1,14 @@
+---
+// La historia: de dónde salió la idea.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Prose from '@/components/ui/Prose.astro';
+interface Props { titulo: string; parrafos: string[] }
+const { titulo, parrafos } = Astro.props;
+---
+
+<section class="py-seccion" aria-labelledby="titulo-historia">
+  <div class="contenedor grid gap-10 lg:grid-cols-12">
+    <SectionHeading titulo={titulo} id="titulo-historia" class="lg:col-span-5" />
+    <Prose class="lg:col-span-7">{parrafos.map((p) => <p>{p}</p>)}</Prose>
+  </div>
+</section>

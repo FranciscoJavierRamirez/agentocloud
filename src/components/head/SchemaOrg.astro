@@ -1,0 +1,37 @@
+---
+// Datos estructurados: Organization en todas las páginas; FAQPage donde hay preguntas.
+interface Props {
+  organizacion: { nombre: string; descripcion: string; url: string; correo: string; ciudad: string };
+  logo: string;
+  preguntas?: { pregunta: string; respuesta: string }[];
+  lang: string;
+}
+const { organizacion: o, logo, preguntas, lang } = Astro.props;
+const [ciudad, pais] = o.ciudad.split(',').map((s) => s.trim());
+const grafo: Record<string, unknown>[] = [
+  {
+    '@type': 'Organization',
+    '@id': `${o.url}/#organizacion`,
+    name: o.nombre,
+    description: o.descripcion,
+    url: o.url,
+    email: o.correo,
+    logo: new URL(logo, Astro.site).href,
+    address: { '@type': 'PostalAddress', addressLocality: ciudad, addressCountry: pais },
+  },
+];
+if (preguntas?.length) {
+  grafo.push({
+    '@type': 'FAQPage',
+    inLanguage: lang,
+    mainEntity: preguntas.map((p) => ({
+      '@type': 'Question',
+      name: p.pregunta,
+      acceptedAnswer: { '@type': 'Answer', text: p.respuesta },
+    })),
+  });
+}
+const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': grafo }).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" is:inline set:html={json} />

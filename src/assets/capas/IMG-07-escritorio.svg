@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 2040" fill="none">
+  <!-- Calzada 22-nov-2026: sale del borde derecho del gabinete, a la altura de la manilla. -->
+  <path id="esperado" pathLength="1" d="M1045,898 L1500,898"/>
+  <path id="medido" pathLength="1" d="M1045,914 L1500,914"/>
+</svg>

@@ -1,0 +1,24 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-01"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  # Foto IA v1 (20-nov-2026), sin ampliar ni retocar: falta escalar a 2560 px y aplicar la curva de color (19 §7).
+  archivo: "IMG-01-escritorio.webp"
+  ancho: 1916
+  alto: 821
+  foco: [100, 60]
+  capa:
+    archivo: "IMG-01-escritorio.svg"
+    estado: "brecha"
+    rotulo: [80, 55]
+celular:
+  archivo: "IMG-01-celular.webp"
+  ancho: 1152
+  alto: 2048
+  foco: [50, 20]
+  capa:
+    archivo: "IMG-01-celular.svg"
+    estado: "brecha"
+    rotulo: [12, 10]

@@ -1,0 +1,20 @@
+---
+// Por qué desde Chile, con sus cifras públicas (del registro, con su fuente).
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import SourcedStat from '@/components/ui/SourcedStat.astro';
+import Prose from '@/components/ui/Prose.astro';
+import ReliefTexture from '@/components/media/ReliefTexture.astro';
+interface Props { lang: string; titulo: string; parrafos: string[]; cifras: { cifra: string; texto: string }[] }
+const { lang, titulo, parrafos, cifras } = Astro.props;
+---
+
+<section class="py-seccion relative isolate" aria-labelledby="titulo-chile">
+  <ReliefTexture />
+  <div class="contenedor flex flex-col gap-10">
+    <SectionHeading titulo={titulo} id="titulo-chile" />
+    <ul class="grid gap-8 md:grid-cols-3">
+      {cifras.map((c) => <li><SourcedStat lang={lang} cifra={c.cifra} texto={c.texto} /></li>)}
+    </ul>
+    <Prose>{parrafos.map((p) => <p>{p}</p>)}</Prose>
+  </div>
+</section>

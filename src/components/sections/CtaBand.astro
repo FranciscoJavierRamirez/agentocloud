@@ -1,0 +1,15 @@
+---
+// Franja final: toda página termina con una sola acción, agendar 30 minutos.
+import Button from '@/components/ui/Button.astro';
+import { comunes, destino } from '@/lib/i18n';
+interface Props { lang: string; titulo: string; boton?: string }
+const { lang, titulo, boton } = Astro.props;
+const t = await comunes(lang);
+---
+
+<section class="border-linea bg-sup border-t" aria-labelledby="titulo-cierre">
+  <div class="contenedor py-seccion flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+    <h2 id="titulo-cierre" class="font-display text-seccion max-w-lectura">{titulo}</h2>
+    <Button href={destino(lang, t.navegacion.accion_principal)} flecha data-evento="agendar" data-origen="cierre">{boton ?? t.navegacion.accion_principal.texto}</Button>
+  </div>
+</section>

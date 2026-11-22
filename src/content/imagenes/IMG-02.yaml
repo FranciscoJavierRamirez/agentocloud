@@ -1,0 +1,38 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "IMG-02"
+provisional: true
+ilustrativa: true
+tema: "claro"
+escritorio:
+  archivo: "IMG-02-escritorio.webp"
+  ancho: 2048
+  alto: 880
+  foco: [50, 50]
+  capa:
+    archivo: "IMG-02-escritorio.svg"
+    estado: "cierra"
+    puntos:
+      - x: 12
+        y: 82
+      - x: 38
+        y: 64
+      - x: 64
+        y: 45
+      - x: 91
+        y: 28
+celular:
+  archivo: "IMG-02-celular.webp"
+  ancho: 1632
+  alto: 2040
+  foco: [50, 50]
+  capa:
+    archivo: "IMG-02-celular.svg"
+    estado: "cierra"
+    # En celular solo caben las cotas de los extremos: «cota» indica cuál de las cuatro va en cada punto.
+    puntos:
+      - x: 18
+        y: 85
+        cota: 0
+      - x: 95
+        y: 66.5
+        cota: 3

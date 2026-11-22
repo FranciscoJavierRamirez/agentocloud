@@ -1,0 +1,19 @@
+---
+// 7 · Para cada uno: cuatro tarjetas con foto y una frase. Comparten estructura; cada foto y cada capa es distinta.
+// En la de medio ambiente el balance cierra: las dos líneas quedan juntas, sin cobre. La calma también es un mensaje.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import PhotoCard from '@/components/ui/PhotoCard.astro';
+import { seccion } from '@/lib/i18n';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const s = await seccion(lang, 'para-cada-uno');
+---
+
+<section id={s.ancla} class="py-seccion" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <div class="contenedor flex flex-col gap-10">
+    <SectionHeading titulo={s.titulo} id={`titulo-${s.id}`} />
+    <ul class="grid gap-6 lg:grid-cols-2">
+      {s.tarjetas.map((tarjeta) => <li><PhotoCard lang={lang} titulo={tarjeta.titulo} texto={tarjeta.texto} imagen={tarjeta.imagen} rotulo={tarjeta.capa_gemelo} /></li>)}
+    </ul>
+  </div>
+</section>

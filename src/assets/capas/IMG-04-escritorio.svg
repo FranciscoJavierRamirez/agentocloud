@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" fill="none">
+  <!-- Calzada 22-nov-2026: el anillo marca la voluta (impulsor) de la bomba. -->
+  <path id="esperado" pathLength="1" d="M844.2,637.1 L1875.2,637.1"/>
+  <path id="medido" pathLength="1" d="M844.2,637.1 L1263.4,637.1 L1314.3,588.1 L1467.1,588.1 L1518,637.1 L1875.2,637.1"/>
+  <path id="brecha" d="M1263.4,637.1 L1314.3,588.1 L1467.1,588.1 L1518,637.1 Z"/>
+  <circle id="anillo" cx="1385" cy="712" r="92"/>
+</svg>

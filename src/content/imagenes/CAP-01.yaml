@@ -1,0 +1,9 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "CAP-01"
+provisional: true
+tema: "oscuro"
+escritorio:
+  archivo: "CAP-01-escritorio.webp"
+  ancho: 1920
+  alto: 1200
+  foco: [50, 50]

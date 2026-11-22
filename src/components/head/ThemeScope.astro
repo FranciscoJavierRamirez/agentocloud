@@ -1,0 +1,7 @@
+---
+// Envuelve un bloque en el tema oscuro (Seguridad, marco de la captura). No se escribe dark: en cada clase.
+interface Props { as?: 'div' | 'section' | 'figure'; class?: string; [atributo: string]: unknown }
+const { as: Etiqueta = 'div', class: clase, ...resto } = Astro.props;
+---
+
+<Etiqueta data-theme="dark" class:list={['tema-oscuro', clase]} {...resto}><slot /></Etiqueta>

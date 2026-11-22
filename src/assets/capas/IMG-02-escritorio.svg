@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 880" fill="none">
+  <!-- Calzada 22-nov-2026: costa, estación 1, estación 2 y estanque de la faena, tal como aparecen en la foto. -->
+  <path id="esperado" pathLength="1" d="M245.8,721.6 L778.2,563.2 L1310.7,396.0 L1863.7,246.4"/>
+  <path id="medido" pathLength="1" d="M245.8,732.2 L778.2,573.8 L1310.7,406.6 L1863.7,257.0"/>
+</svg>

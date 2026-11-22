@@ -1,0 +1,21 @@
+---
+// 12 · Preguntas: las ocho existentes, en acordeón nativo. También alimentan el FAQPage de schema.org.
+// Dos columnas: el título queda fijo a la izquierda mientras se recorren las preguntas.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Accordion from '@/components/ui/Accordion.astro';
+import ReliefTexture from '@/components/media/ReliefTexture.astro';
+import { seccion } from '@/lib/i18n';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const s = await seccion(lang, 'preguntas');
+---
+
+<section id={s.ancla} class="py-seccion relative isolate" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <ReliefTexture />
+  <div class="contenedor grid items-start gap-x-12 gap-y-8 lg:grid-cols-12">
+    <SectionHeading titulo={s.titulo} id={`titulo-${s.id}`} class="lg:sticky lg:top-28 lg:col-span-4" />
+    <div class="border-linea border-t lg:col-span-8">
+      {s.preguntas.map((p) => <Accordion titulo={p.pregunta}><p>{p.respuesta}</p></Accordion>)}
+    </div>
+  </div>
+</section>

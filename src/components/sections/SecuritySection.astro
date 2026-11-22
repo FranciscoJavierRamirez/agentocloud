@@ -1,0 +1,46 @@
+---
+// 8 · Seguridad: la única sección en tema oscuro. El paso de claro a oscuro es un corte limpio, sin degradé.
+// La foto es una franja de ambiente; el esquema de solo lectura va en su propia caja, donde cabe completo en todos los anchos.
+import ThemeScope from '@/components/head/ThemeScope.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Prose from '@/components/ui/Prose.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import TwinFigure from '@/components/media/TwinFigure.astro';
+import ReadOnlyDiagram from '@/components/charts/ReadOnlyDiagram.astro';
+import { destino, entradaSeccion } from '@/lib/i18n';
+import { render } from 'astro:content';
+interface Props { lang: string }
+const { lang } = Astro.props;
+const entrada = await entradaSeccion(lang, 'seguridad');
+const s = entrada.data as Extract<typeof entrada.data, { id: 'seguridad' }>;
+const { Content } = await render(entrada);
+---
+
+<ThemeScope as="section" id={s.ancla} class="relative" data-seccion={s.orden} aria-labelledby={`titulo-${s.id}`}>
+  <TwinFigure lang={lang} codigo={s.imagen.codigo} alt={s.imagen.alt} ajuste="llenar" marcas={false} class="aspect-foto md:aspect-banda max-h-96 w-full" />
+  <div class="contenedor py-seccion grid items-start gap-x-12 gap-y-10 lg:grid-cols-12">
+    <div class="flex flex-col gap-6 lg:col-span-5">
+      <SectionHeading titulo={s.titulo} id={`titulo-${s.id}`} />
+      <p class="text-bajada">{s.bajada}</p>
+      <Prose class="text-texto-2"><Content /></Prose>
+      <Button href={destino(lang, s.boton)} flecha class="self-start" data-evento="agendar" data-origen="seguridad">{s.boton.texto}</Button>
+    </div>
+    <div class="flex flex-col gap-8 lg:col-span-7">
+      <div class="border-linea bg-sup rounded-tarjeta border p-5 md:p-6"><ReadOnlyDiagram nodos={s.esquema.nodos} flecha={s.esquema.flecha} alt={s.esquema.alt} /></div>
+      <ul class="border-linea grid gap-x-8 border-t sm:grid-cols-2">
+        {
+          s.puntos.map((punto) => (
+            <li class="border-linea flex items-start gap-3 border-b py-4">
+              <Icon nombre="candado" tamano="s" class="text-patina-texto mt-1 shrink-0" />
+              <div class="flex flex-col gap-1">
+                <h3 class="font-display text-sub font-semibold">{punto.titulo}</h3>
+                {punto.texto && <p class="text-cuerpo text-texto-2">{punto.texto}</p>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</ThemeScope>

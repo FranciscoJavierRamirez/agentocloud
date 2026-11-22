@@ -1,0 +1,59 @@
+---
+// <picture> con AVIF y WebP, respaldo, srcset por ancho y un recorte distinto para celular (dirección de arte).
+// El <Picture> de Astro no cambia de imagen por ancho de pantalla: por eso se arma con getImage().
+import { getImage } from 'astro:assets';
+import { archivoImagen, fichaImagen } from '@/lib/imagenes';
+
+interface Props {
+  codigo: string;
+  alt: string;
+  /** Imagen de mayor pintado (hero): sin carga diferida y con prioridad alta. Visible desde el primer cuadro. */
+  lcp?: boolean;
+  /** Ancho que ocupa en pantalla, para que el navegador elija el archivo justo. */
+  sizes?: string;
+  /** Ancho máximo que se genera (por ejemplo, una tarjeta que nunca ocupa más de media pantalla). */
+  anchoMaximo?: number;
+  /** Fondo de textura muy atenuado (opacidad ≈ 20 %): menos ancho y menos calidad, no se nota. */
+  textura?: boolean;
+  class?: string;
+}
+const { codigo, alt, lcp = false, sizes = '100vw', anchoMaximo, textura = false, class: clase } = Astro.props;
+const ficha = await fichaImagen(codigo);
+const escritorio = archivoImagen(ficha.escritorio.archivo);
+const celular = ficha.celular ? archivoImagen(ficha.celular.archivo) : undefined;
+
+// Calidad de entrega (presupuesto: 150 KB por archivo; 250 KB para el hero). La foto maestra es WebP de calidad 90.
+const CALIDAD = textura ? { avif: 30, webp: 35 } : { avif: 45, webp: 70 };
+const tope = Math.min(anchoMaximo ?? Infinity, textura ? 1280 : Infinity);
+const anchos = (maximo: number, lista: number[], limiteExtra = Infinity) => {
+  const limite = Math.min(maximo, tope, limiteExtra);
+  return [...lista.filter((a) => a < limite), limite];
+};
+const anchosE = anchos(escritorio.width, [640, 960, 1440, 1920]);
+const anchosC = celular ? anchos(celular.width, [480, 760, 1080], textura ? 760 : Infinity) : [];
+const variante = (src: ImageMetadata, format: 'avif' | 'webp', widths: number[]) => getImage({ src, format, widths, quality: CALIDAD[format] });
+
+const [eAvif, eWebp, respaldo] = await Promise.all([
+  variante(escritorio, 'avif', anchosE),
+  variante(escritorio, 'webp', anchosE),
+  getImage({ src: escritorio, format: 'webp', width: Math.min(escritorio.width, tope, 1440), quality: CALIDAD.webp }),
+]);
+const movil = celular ? await Promise.all([variante(celular, 'avif', anchosC), variante(celular, 'webp', anchosC)]) : undefined;
+---
+
+<picture>
+  {movil && <source media="(max-width: 759px)" type="image/avif" srcset={movil[0].srcSet.attribute} sizes={sizes} />}
+  {movil && <source media="(max-width: 759px)" type="image/webp" srcset={movil[1].srcSet.attribute} sizes={sizes} />}
+  <source type="image/avif" srcset={eAvif.srcSet.attribute} sizes={sizes} />
+  <source type="image/webp" srcset={eWebp.srcSet.attribute} sizes={sizes} />
+  <img
+    src={respaldo.src}
+    alt={alt}
+    width={escritorio.width}
+    height={escritorio.height}
+    loading={lcp ? 'eager' : 'lazy'}
+    decoding={lcp ? 'sync' : 'async'}
+    fetchpriority={lcp ? 'high' : 'auto'}
+    class={clase}
+  />
+</picture>

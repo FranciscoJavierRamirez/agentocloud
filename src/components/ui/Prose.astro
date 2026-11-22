@@ -1,0 +1,18 @@
+---
+// Tipografía del texto largo (historia, privacidad).
+interface Props { class?: string }
+const { class: clase } = Astro.props;
+---
+
+<div
+  class:list={[
+    'text-cuerpo md:text-cuerpo-lg text-tinta max-w-lectura flex flex-col gap-5',
+    '[&_h2]:font-display [&_h2]:text-sub [&_h2]:mt-6 [&_h2]:font-semibold',
+    '[&_a]:underline [&_a]:underline-offset-4',
+    '[&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-5',
+    '[&_blockquote]:border-linea [&_blockquote]:text-texto-2 [&_blockquote]:rounded-control [&_blockquote]:bg-sup [&_blockquote]:border [&_blockquote]:border-dashed [&_blockquote]:p-4',
+    clase,
+  ]}
+>
+  <slot />
+</div>

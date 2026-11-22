@@ -1,0 +1,7 @@
+---
+// Tarjeta con borde iluminado del lado del sol (sustituye a las sombras grises).
+interface Props { as?: 'div' | 'article' | 'li' | 'section'; class?: string; [atributo: string]: unknown }
+const { as: Etiqueta = 'div', class: clase, ...resto } = Astro.props;
+---
+
+<Etiqueta class:list={['borde-sol rounded-tarjeta border-linea bg-sup border p-6', clase]} data-borde-sol {...resto}><slot /></Etiqueta>

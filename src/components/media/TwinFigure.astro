@@ -1,0 +1,120 @@
+---
+// El lienzo común: une la foto, la capa del gemelo y el rótulo técnico, y garantiza que calcen.
+// Toda foto del territorio o de la infraestructura pasa por aquí.
+import Photo from './Photo.astro';
+import TwinLayer from './TwinLayer.astro';
+import TechLabel from '@/components/ui/TechLabel.astro';
+import RegistrationMarks from '@/components/ui/RegistrationMarks.astro';
+import { fichaImagen } from '@/lib/imagenes';
+import { comunes } from '@/lib/i18n';
+
+interface Props {
+  lang: string;
+  codigo: string;
+  alt: string;
+  /** Rótulo técnico de la capa (texto real, del contenido) */
+  rotulo?: string;
+  /** El rótulo solo se ve cuando hay brecha (la foto responde a una isla) */
+  rotuloSoloConBrecha?: boolean;
+  /** Cotas sobre los puntos de la capa (perfil de la impulsión) */
+  cotas?: string[];
+  /** propio: la figura toma la proporción de la imagen · llenar: llena a su contenedor y recorta el lienzo */
+  ajuste?: 'propio' | 'llenar';
+  estado?: 'cierra' | 'brecha';
+  animacion?: 'css' | 'escena' | 'ninguna';
+  lcp?: boolean;
+  sizes?: string;
+  chica?: boolean;
+  marcas?: boolean;
+  /** Nombre para que una isla o una escena la encuentre: data-gemelo="balance" */
+  nombre?: string;
+  class?: string;
+}
+const {
+  lang, codigo, alt, rotulo, rotuloSoloConBrecha = false, cotas, ajuste = 'propio', estado, animacion = 'css',
+  lcp = false, sizes, chica = false, marcas = true, nombre, class: clase,
+} = Astro.props;
+
+const ficha = await fichaImagen(codigo);
+const t = await comunes(lang);
+const e = ficha.escritorio;
+const c = ficha.celular ?? ficha.escritorio;
+const recortes = [
+  { datos: c, visible: ficha.celular ? 'md:hidden' : '' },
+  ...(ficha.celular ? [{ datos: e, visible: 'max-md:hidden' }] : []),
+];
+const estadoInicial = estado ?? e.capa?.estado;
+const variables = [
+  `--ratio-c:${c.ancho / c.alto}`, `--fx-c:${c.foco[0] / 100}`, `--fy-c:${c.foco[1] / 100}`,
+  `--ratio-e:${e.ancho / e.alto}`, `--fx-e:${e.foco[0] / 100}`, `--fy-e:${e.foco[1] / 100}`,
+  c.capa?.cierre_dy !== undefined ? `--cierre-dy-c:${c.capa.cierre_dy}px` : '',
+  e.capa?.cierre_dy !== undefined ? `--cierre-dy-e:${e.capa.cierre_dy}px` : '',
+].filter(Boolean).join(';');
+
+// El rótulo se ancla por la izquierda; si el punto está en la mitad derecha, por la derecha, para que no se salga del cuadro.
+const posicion = ([x, y]: [number, number]) => (x <= 30 ? `left:${x}%;top:${y}%` : `right:${Math.max(2, 100 - x - 55)}%;top:${y}%`);
+// La cota queda justo encima de la instalación que nombra (se ancla por abajo) y centrada en ella; en los bordes, al lado.
+// Se usa transform y no translate: translate lo ocupa el desfase de escritorio (global.css › .rotulo-capa).
+const posicionCota = (x: number, y: number) => {
+  const vertical = `bottom:${100 - y}%`;
+  if (x < 22) return `left:${Math.max(1, x - 4)}%;${vertical}`;
+  if (x > 78) return `right:${Math.max(1, 100 - x - 4)}%;${vertical}`;
+  return `left:${x}%;${vertical};transform:translateX(-50%)`;
+};
+// Rótulo «Imagen ilustrativa»: en la esquina de cada recorte que no choque con lo que marca el gemelo.
+const esquinas = { 'arriba-derecha': 'top-2.5 right-7', 'arriba-izquierda': 'top-2.5 left-7', 'abajo-derecha': 'bottom-2.5 right-7', 'abajo-izquierda': 'bottom-2.5 left-7' } as const;
+---
+
+<figure
+  class:list={['figura-gemela bg-sup-2', clase]}
+  data-ajuste={ajuste}
+  data-estado={estadoInicial}
+  data-gemelo={nombre}
+  data-tema={ficha.tema}
+  style={variables}
+>
+  <div class="lienzo">
+    <Photo codigo={codigo} alt={alt} lcp={lcp} sizes={sizes ?? (chica ? '(min-width: 47.5rem) 50vw, 100vw' : undefined)} anchoMaximo={chica ? 1280 : undefined} />
+    <div class="luz-rasante absolute inset-0" aria-hidden="true"></div>
+    {
+      recortes.map(({ datos, visible }) =>
+        datos.capa ? (
+          <>
+            <TwinLayer archivo={datos.capa.archivo} animacion={animacion} class={visible} />
+            {rotulo && datos.capa.rotulo && (
+              <TechLabel
+                texto={rotulo}
+                sobre="foto"
+                apilar={false}
+                brecha={datos.capa.estado === 'brecha'}
+                class:list={['rotulo-capa', visible]}
+                style={posicion(datos.capa.rotulo)}
+                data-solo={rotuloSoloConBrecha ? 'brecha' : undefined}
+                data-rotulo-capa
+              />
+            )}
+            {cotas &&
+              datos.capa.puntos?.map((p, i) =>
+                cotas[p.cota ?? i] ? (
+                  <TechLabel texto={cotas[p.cota ?? i]} sobre="foto" apilar={false} class:list={['rotulo-capa w-max max-md:px-2 max-md:py-1', visible]} style={posicionCota(p.x, p.y - 2)} data-cota={i} />
+                ) : null,
+              )}
+          </>
+        ) : null,
+      )
+    }
+  </div>
+  {
+    ficha.ilustrativa &&
+      recortes.map(({ datos, visible }) => (
+        <span
+          class:list={['rotulo velo-suave text-texto-2 rounded-control pointer-events-none absolute z-(--z-rotulo) px-2 py-1 whitespace-nowrap', esquinas[datos.aviso ?? 'arriba-derecha'], visible]}
+          aria-hidden={alt ? undefined : 'true'}
+          data-aviso-ilustrativa
+        >
+          {t.interfaz.imagen_ilustrativa}
+        </span>
+      ))
+  }
+  {marcas && !chica && <RegistrationMarks />}
+</figure>

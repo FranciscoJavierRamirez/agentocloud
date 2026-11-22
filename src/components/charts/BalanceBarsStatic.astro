@@ -1,0 +1,38 @@
+---
+// Entra, sale y cambio de nivel, en reposo. Barras horizontales: se leen igual en celular.
+import { anchoBarra } from '@/lib/graficos';
+import { conSigno } from '@/lib/formato';
+interface Props {
+  lang: string;
+  etiquetas: { entra: string; sale: string; cambio: string };
+  unidad: string;
+  entra: number;
+  sale: number;
+  cambio: number;
+  cierra: boolean;
+  sensorRayado?: boolean;
+}
+const { lang, etiquetas, unidad, entra, sale, cambio, cierra, sensorRayado = false } = Astro.props;
+const maximo = Math.max(entra, sale, 1);
+const filas = [
+  { nombre: etiquetas.entra, valor: entra, clase: 'bg-tinta' },
+  { nombre: etiquetas.sale, valor: sale, clase: 'bg-tinta' },
+  { nombre: etiquetas.cambio, valor: cambio, clase: sensorRayado ? 'rayado' : cierra ? 'bg-tinta' : 'rayado-cobre' },
+];
+---
+
+<dl class="flex flex-col gap-4">
+  {
+    filas.map((f) => (
+      <div class="flex flex-col gap-1">
+        <dt class="rotulo text-texto-2">{f.nombre}</dt>
+        <dd class="flex items-center gap-3">
+          <span class="bg-sup-2 rounded-control relative h-4 flex-1 overflow-hidden">
+            <span class:list={['absolute inset-y-0 left-0 block', f.clase]} style={`width:${Math.max(anchoBarra(f.valor, maximo), f.valor ? 4 : 0)}%`} />
+          </span>
+          <span class="text-cuerpo w-28 text-right font-mono tabular-nums">{conSigno(lang, f.valor, Number.isInteger(f.valor) ? 0 : 1)} {unidad}</span>
+        </dd>
+      </div>
+    ))
+  }
+</dl>

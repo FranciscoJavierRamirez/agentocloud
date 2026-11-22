@@ -1,0 +1,9 @@
+# Ficha de imagen. Coordenadas en porcentaje del lienzo (x, y).
+codigo: "RET-01"
+provisional: false
+tema: "claro"
+escritorio:
+  archivo: "RET-01-escritorio.webp"
+  ancho: 952
+  alto: 952
+  foco: [50, 40]

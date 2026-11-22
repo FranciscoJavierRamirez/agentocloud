@@ -1,0 +1,18 @@
+---
+// Estado con texto y forma, nunca solo color: cierra (=), no cierra (≠, en cobre), simulado (punteado).
+interface Props { estado: 'cierra' | 'no-cierra' | 'simulado'; class?: string }
+const { estado, class: clase } = Astro.props;
+---
+
+<span
+  class:list={[
+    'rotulo rounded-control inline-flex items-center gap-2 border px-3 py-2',
+    estado === 'no-cierra' ? 'border-cobre text-cobre-texto' : 'border-linea text-tinta',
+    estado === 'simulado' && 'text-texto-2 border-dashed',
+    clase,
+  ]}
+  data-estado-chip={estado}
+>
+  <span aria-hidden="true" class="font-mono">{estado === 'cierra' ? '=' : estado === 'no-cierra' ? '≠' : '◌'}</span>
+  <slot />
+</span>
